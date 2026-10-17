@@ -16,26 +16,32 @@ def:pub Header(
     onSignOut: Callable[[], None]
 ) -> JsxElement {
     has confirmHalt: bool = False;
+    has sending: bool = False;
 
     halted: bool = False;
     if view {
         halted = view["status"] == "halted";
     }
-    size: str = "xs" if compact else "sm";
+    size: str = "sm";
 
     async def doHalt() {
+        if not canAct or sending {
+            return;
+        }
         confirmHalt = False;
+        sending = True;
         try {
             if halted {
                 await resume();
-                toastOk("Resumed");
+                toastOk("Resume requested. Waiting for server confirmation.");
             } else {
                 await halt();
-                toastOk("Halted — autonomy frozen");
+                toastOk("Halt requested. Waiting for server confirmation.");
             }
         } except Exception as e {
             toastErr(e);
         }
+        sending = False;
         refresh();
         setTimeout(lambda { refresh(); }, 1500);
     }
@@ -54,11 +60,12 @@ def:pub Header(
         }
     }
 
-    <Group justify="space-between" h="100%" px={"xs" if compact else "md"} wrap="nowrap">
+    <Group className="crisis-header" justify="space-between" h="100%" px={"xs" if compact else "lg"} wrap="nowrap">
         <Group gap={6 if compact else "sm"} wrap="nowrap" style={{"minWidth": 0}}>
-            <Title order={5 if compact else 4} c="teal.7" style={{"whiteSpace": "nowrap"}}>
-                ResQ-Mesh
-            </Title>
+            <div className="crisis-brand">
+                <Title order={5 if compact else 4} style={{"whiteSpace": "nowrap"}}>ResQ-Mesh</Title>
+                {if not compact {<span>EMERGENCY OPERATIONS</span>}}
+            </div>
             {if view {
                 <Badge
                     color={statusColor(view["status"])}
@@ -72,7 +79,7 @@ def:pub Header(
             {if view and not compact {
                 # The goal is the one thing the commander actually states, and it is
                 # the first thing this bar should show them.
-                <Text size="sm" c="dimmed" truncate="end" title={view["goal"]} style={{"minWidth": 0}}>
+                <Text size="sm" className="crisis-header-goal" truncate="end" title={view["goal"]} style={{"minWidth": 0}}>
                     {view["incident_id"] + " · " + view["goal"] + (" · working…" if view["busy"] else "")}
                 </Text>
             }}
@@ -80,7 +87,7 @@ def:pub Header(
 
         <Group gap="xs" wrap="nowrap">
             {if me and not compact {
-                <Text size="xs" c="dimmed" style={{"whiteSpace": "nowrap"}}>
+                <Text size="sm" className="crisis-header-user" style={{"whiteSpace": "nowrap"}}>
                     {me["display_name"] + " · " + me["role"]}
                 </Text>
             }}
@@ -100,6 +107,7 @@ def:pub Header(
                 size={size}
                 variant={"light" if halted else "filled"}
                 disabled={not canAct}
+                loading={sending}
                 onClick={haltOrResume}
             >
                 {"Resume" if halted else ("Halt" if compact else "Emergency halt")}
@@ -116,7 +124,7 @@ def:pub Header(
                         <Button variant="default" onClick={keepRunning}>
                             Keep running
                         </Button>
-                        <Button color="red" onClick={doHalt}>
+                        <Button color="red" disabled={not canAct} loading={sending} onClick={doHalt}>
                             Halt now
                         </Button>
                     </Group>

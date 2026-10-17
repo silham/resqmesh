@@ -142,6 +142,28 @@ terminal, and `add`, `list` and `enrol` manage the rest of the roster on a runni
 Set `JAC_SERVE_AUTH_SECRET` to a long random value before exposing an instance: it signs session
 tokens, and the built-in default is public. Sessions last a day.
 
+### Crisis-focused commander console
+
+The console keeps operational counts and pending decisions visible above the workspace.
+Wide screens show the incident queue, map and decision panel together; phones use larger
+view controls. A pending decision never switches away from the operator's current view.
+The map starts in 2D, with 3D available on demand.
+
+Reported people are the largest reported headcount per open, ranked cluster, matching
+triage rather than adding duplicate reports. A `+` means some incident headcounts are
+unknown. Completed clusters are excluded. Available vehicles must be marked available
+in the roster and have no released, en-route or on-scene commitment.
+
+Server contact time is separate from the incident's last change. A failed poll or more
+than 15 seconds without a response marks the picture stale and disables plan decisions;
+the last picture stays visible, polling retries, and the emergency halt stays accessible.
+Requests time out after 15 seconds so a stalled connection can be retried.
+
+Use the toolchain pinned in `jac.toml` (0.37.25); the older Windows PyPI compiler cannot
+compile this app's current client syntax. Validate the overview with
+`jac test tests/crisis_tests.jac` and compile the console with
+`jac build -a client main.jac`.
+
 ### With real language models
 
 Copy `.env.example` to `.env` and add at least one key. Providers without a key are skipped.

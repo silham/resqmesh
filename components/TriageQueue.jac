@@ -3,6 +3,7 @@ produced it: a commander interrogates a ranking rather than accepting it blind."
 
 import from "@mantine/core" { Badge, Box, Group, Select, Stack, Text, TextInput, UnstyledButton }
 import from ..lib.format { clusterPlace, isCompleted, prettyHazard, priorityBand }
+import from ..lib.crisis { clusterPeople }
 import from .ConsoleEvidence { ConsoleEvidence }
 import from .ConsoleHelpers { percent }
 import from .ConsoleScoreBreakdown { ConsoleScoreBreakdown }
@@ -13,7 +14,7 @@ def:pub TriageQueue(view: any) -> JsxElement {
     has hazard: any = None;
 
     def byRank(item: any) -> float {
-        return item["rank"] as float;
+        return (item["rank"] + (100000 if isCompleted(view, item["cluster_id"]) else 0)) as float;
     }
 
     # One handler per row. Variables assigned inside a JSX loop are shared by every
@@ -66,22 +67,24 @@ def:pub TriageQueue(view: any) -> JsxElement {
         </Text>;
     }
 
-    <Stack gap={4} p="xs">
+    <Stack gap="sm" p="md" className="crisis-triage">
         <Group gap="xs" wrap="nowrap">
             <TextInput
+                label="Find an incident"
                 placeholder="Search place or reason"
                 value={search}
                 onChange={lambda (e: ChangeEvent) { search = e.target.value; }}
-                size="xs"
+                size="sm"
                 style={{"flex": 1}}
             />
             <Select
+                label="Hazard"
                 placeholder="Any hazard"
                 value={hazard}
                 onChange={lambda (v: any) { hazard = v; }}
                 data={hazardOptions}
                 clearable={True}
-                size="xs"
+                size="sm"
                 w={130}
             />
         </Group>
@@ -98,45 +101,53 @@ def:pub TriageQueue(view: any) -> JsxElement {
             # trail, but must stop reading as outstanding demand.
             done = isCompleted(view, item["cluster_id"]);
             clusterId = item["cluster_id"];
-            subtitle = "served — reported complete by the crew" if done else (
+            priorityText = "Critical" if band["label"] == "P1" else ("Urgent" if band["label"] == "P2" else "Monitor");
+            people = clusterPeople(view, clusterId);
+            subtitle = "Reported complete by the crew" if done else (
                 (prettyHazard(cluster["hazard_type"]) if cluster else "unknown hazard")
-                + " · conf " + percent(cluster["confidence_0_1"] if cluster else 0) + "%"
+                + " · " + (str(people) + " people reported" if people >= 0 else "People count unknown")
             );
-            <Box key={clusterId} style={{"border": "1px solid var(--mantine-color-gray-2)", "borderRadius": 8}}>
+            <Box key={clusterId} className={"crisis-incident is-complete" if done else "crisis-incident priority-" + band["label"]}>
                 <UnstyledButton
                     onClick={toggleFor(clusterId)}
-                    style={{"width": "100%", "padding": "8px 12px"}}
+                    className="crisis-incident-button"
+                    aria-expanded={isOpen}
+                    aria-controls={"incident-evidence-" + clusterId}
                 >
-                    <Group justify="space-between" wrap="nowrap">
-                        <Group gap="sm" wrap="nowrap">
+                    <Stack gap="xs">
+                        <Group justify="space-between" wrap="nowrap">
                             <Badge
                                 color={"gray" if done else band["color"]}
                                 variant={"light" if done else "filled"}
                                 radius="sm"
                             >
-                                {"✓" if done else band["label"]}
+                                {"Complete" if done else band["label"] + " · " + priorityText}
                             </Badge>
-                            <div>
+                            <Text size="xs" c="dimmed">{"Rank " + str(item["rank"])}</Text>
+                        </Group>
+                        <div>
                                 <Text
-                                    size="sm"
-                                    fw={600}
+                                    size="lg"
+                                    fw={700}
                                     td={"line-through" if done else "none"}
                                     c={"dimmed" if done else "inherit"}
                                 >
                                     {clusterPlace(view, clusterId)}
                                 </Text>
-                                <Text size="xs" c="dimmed">
+                                <Text size="sm" c="dimmed">
                                     {subtitle}
                                 </Text>
-                            </div>
+                        </div>
+                        <Group justify="space-between" gap="xs">
+                            <Text size="xs" c="dimmed">
+                                {"Evidence confidence " + percent(cluster["confidence_0_1"] if cluster else 0) + "%"}
+                            </Text>
+                            <span className="crisis-evidence-toggle">{ "Close evidence −" if isOpen else "Review evidence +" }</span>
                         </Group>
-                        <Text size="lg" fw={700} ff="monospace">
-                            {item["score_0_1"].toFixed(2)}
-                        </Text>
-                    </Group>
+                    </Stack>
                 </UnstyledButton>
                 {if isOpen {
-                    <Box>
+                    <Box id={"incident-evidence-" + clusterId}>
                         <ConsoleScoreBreakdown item={item} />
                         {if cluster and cluster["merged_from"] and cluster["merged_from"].length > 0 {
                             <Text size="xs" c="dimmed" px="md" pb={4}>

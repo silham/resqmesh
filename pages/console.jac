@@ -13,31 +13,19 @@ in it. A poll must never be the thing that decides whether you are signed in.
 
 import from "react" { useEffect }
 import from "@jac/runtime" { jacIsLoggedIn, jacLogout }
-import from "@mantine/core" { Alert, AppShell, Button, Loader, ScrollArea, SegmentedControl, Stack }
+import from "@mantine/core" { Alert, AppShell, Button, Loader, Stack }
 import from "@mantine/hooks" { useMediaQuery }
 import from resqmesh.service.endpoints { get_incident, me as whoAmI }
-import from ..lib.api { errorText, parseError }
-import from ..components.ApprovalPanel { ApprovalPanel }
-import from ..components.Fleet { Fleet }
+import from ..lib.api { parseError }
+import from ..components.CrisisOverview { CrisisOverview }
+import from ..components.ConsoleWorkspace { ConsoleWorkspace }
 import from ..components.Header { Header }
-import from ..components.HeldReports { HeldReports }
 import from ..components.Login { Login }
-import from ..components.MapPanel { MapPanel }
 import from ..components.OpenIncident { OpenIncident }
 import from ..components.Records { Records }
-import from ..components.TriageQueue { TriageQueue }
 import from ..components.ConsoleHelpers { stillStarting }
 
 glob POLL_MS: int = 3000;
-
-# Short enough to fit four tabs in a 420px panel, and ordered by how often a commander
-# needs them between decisions.
-glob PANELS: list[dict[str, str]] = [
-    {"value": "queue", "label": "Queue"},
-    {"value": "approval", "label": "Approve"},
-    {"value": "fleet", "label": "Fleet"},
-    {"value": "held", "label": "Held"}
-];
 
 def:pub Console() -> JsxPage {
     # "checking" until the first answer, then "in", "out" (show the sign-in gate) or
@@ -51,14 +39,18 @@ def:pub Console() -> JsxPage {
     has pollOn: bool = False;
     has tab: str = "queue";
     has records: bool = False;
+    has lastContact: float = 0;
+    has now: float = 0;
     # Bumped whenever the session ends, so an answer still in flight from the old one
     # cannot put a stale incident back on screen.
     has epoch: Ref[any] = Ref(0);
-    has wasAttention: Ref[any] = Ref(False);
+    has inFlight: Ref[bool] = Ref(False);
 
-    mq: any = useMediaQuery("(max-width: 768px)");
+    mq: any = useMediaQuery("(max-width: 1023px)");
+    wideMq: any = useMediaQuery("(min-width: 1600px)");
     isMobile: bool = True if mq else False;
-    headerHeight: int = 52 if isMobile else 56;
+    isWide: bool = True if wideMq else False;
+    headerHeight: int = 64;
 
     def endSession() {
         n: any = epoch.current;
@@ -70,6 +62,7 @@ def:pub Console() -> JsxPage {
         view = None;
         noIncident = False;
         pollOn = False;
+        lastContact = 0;
         session = "out";
     }
 
@@ -123,10 +116,20 @@ def:pub Console() -> JsxPage {
     }
 
     async def fetchView() {
+        if inFlight.current {
+            return;
+        }
+        inFlight.current = True;
         mine: any = epoch.current;
         got: any = None;
+        timeout: any = None;
         try {
-            got = await get_incident(int(Date.now()));
+            deadline: any = new(Promise, lambda (_resolve: any, reject: any) {
+                timeout = setTimeout(lambda {
+                    reject.call(None, {"message": "The server did not respond within 15 seconds."});
+                }, 15000);
+            });
+            got = await Promise.race([get_incident(int(Date.now())), deadline]);
             if mine != epoch.current {
                 return;
             }
@@ -137,6 +140,8 @@ def:pub Console() -> JsxPage {
                 return;
             }
             view = got;
+            lastContact = Date.now();
+            now = Date.now();
             viewError = "";
             noIncident = False;
         } except Exception as e {
@@ -153,8 +158,7 @@ def:pub Console() -> JsxPage {
                 noIncident = True;
                 pollOn = False;
             } elif stillStarting(err["message"]) {
-                # Booting: say nothing, the poll tries again in a few seconds.
-                viewError = "";
+                viewError = "The server is restarting. The last received picture is shown.";
             } else {
                 viewError = err["message"];
                 # A rejection is a verdict, not an outage: polling it every three
@@ -163,6 +167,9 @@ def:pub Console() -> JsxPage {
                     pollOn = False;
                 }
             }
+        } finally {
+            clearTimeout(timeout);
+            inFlight.current = False;
         }
     }
 
@@ -184,6 +191,7 @@ def:pub Console() -> JsxPage {
         noIncident = False;
         viewError = "";
         records = False;
+        lastContact = 0;
         session = "out";
     }
 
@@ -214,6 +222,11 @@ def:pub Console() -> JsxPage {
         };
     }, [session, pollOn]);
 
+    useEffect(lambda {
+        timer: any = setInterval(lambda { now = Date.now(); }, 1000);
+        return lambda { clearInterval(timer); };
+    }, []);
+
     signedIn: bool = session == "in";
     # Only a commander may authorise a dispatch or freeze the response. Greying the
     # buttons out for everyone else is honesty, not security (the server refuses them
@@ -222,59 +235,17 @@ def:pub Console() -> JsxPage {
     if user {
         canAct = user["role"] == "commander";
     }
-    held: int = 0;
-    # The approval tab also carries the escalation panel, so it must draw attention when
-    # the loop has stopped, not only when a decision is waiting.
     attention: bool = False;
+    halted: bool = False;
     if view {
-        held = view["unresolved"].length;
-        if view["awaiting_decision"] or view["escalated"] {
-            attention = True;
-        }
+        attention = bool(view["awaiting_decision"] or view["escalated"]);
+        halted = view["status"] == "halted";
     }
+    stale: bool = bool(viewError) or (lastContact > 0 and now - lastContact > 15000);
+    actionsEnabled: bool = canAct and not stale and not halted and not view["busy"] if view else False;
 
-    # Follow the incident, not the user's last click: raise the approval panel the moment
-    # a Tier C decision is waiting (or the loop has stopped), and fall back to the triage
-    # queue once it is answered. An empty approval panel is the least useful thing on
-    # screen, and the ranked queue is what a commander watches between decisions.
-    #
-    # Keyed on the transition rather than the current value, so someone who deliberately
-    # opens either tab is not dragged out of it on the next poll.
-    can with [attention] entry {
-        if attention != wasAttention.current {
-            tab = "approval" if attention else "queue";
-            wasAttention.current = attention;
-        }
-    }
-
-    def tabsFor(mobile: bool) -> list[any] {
-        out: list[any] = [];
-        if mobile {
-            out = out + [{"value": "map", "label": "Map"}];
-        }
-        for p in PANELS {
-            label: str = p["label"];
-            if p["value"] == "approval" and attention {
-                label = "● " + label;
-            } elif p["value"] == "held" and held > 0 {
-                label = label + " " + str(held);
-            }
-            out = out + [{"value": p["value"], "label": label}];
-        }
-        return out;
-    }
-
-    def panel(which: str) -> JsxElement {
-        if which == "approval" {
-            return <ApprovalPanel view={view} canAct={canAct} refresh={refresh} />;
-        }
-        if which == "fleet" {
-            return <Fleet view={view} />;
-        }
-        if which == "held" {
-            return <HeldReports view={view} canAct={canAct} refresh={refresh} />;
-        }
-        return <TriageQueue view={view} />;
+    def openDecision() {
+        tab = "approval";
     }
 
     def openRecords() {
@@ -287,10 +258,9 @@ def:pub Console() -> JsxPage {
         tab = v;
     }
 
-    sideTab: str = "queue" if tab == "map" else tab;
     loading: bool = session == "checking" or (signedIn and not view and not viewError and not noIncident);
 
-    <AppShell header={{"height": headerHeight}} padding={0}>
+    <AppShell header={{"height": headerHeight}} padding={0} className="crisis-app">
         <AppShell.Header>
             <Header
                 view={view}
@@ -303,7 +273,7 @@ def:pub Console() -> JsxPage {
             />
         </AppShell.Header>
 
-        <AppShell.Main h={"calc(100dvh - " + str(headerHeight) + "px)"}>
+        <AppShell.Main className={"crisis-main" if signedIn and view else "crisis-main is-gated"}>
             {if loading {
                 <Loader m="xl" />
             }}
@@ -323,58 +293,46 @@ def:pub Console() -> JsxPage {
                     </Stack>
                 </Alert>
             }}
-            {if signedIn and viewError and not noIncident {
+            {if signedIn and viewError and not view and not noIncident {
                 <Alert color="red" title="Cannot load the incident" m="md">
-                    {viewError}
+                    <Stack gap="sm">
+                        <span>{viewError}</span>
+                        <Button variant="default" onClick={refresh}>Retry connection</Button>
+                    </Stack>
                 </Alert>
             }}
-
-            {#* ---- MOBILE: one full-screen view at a time ---- *#}
-            {if signedIn and view and isMobile {
-                <div style={{"display": "flex", "flexDirection": "column", "height": "100%"}}>
-                    <SegmentedControl
-                        value={tab}
-                        onChange={pickTab}
-                        data={tabsFor(True)}
-                        fullWidth={True}
-                        size="xs"
-                        m="xs"
+            {if signedIn and view {
+                <div className="crisis-console">
+                    <CrisisOverview view={view} lastContact={lastContact} now={now} stale={stale} />
+                    {if stale {
+                        <div className="crisis-notice notice-connection" role="alert">
+                            <div>
+                                <strong>Live updates interrupted</strong>
+                                <p>{viewError or "No response received for over 15 seconds."} Showing the last received picture. Dispatch decisions are paused until fresh data arrives.</p>
+                            </div>
+                            <Button variant="default" onClick={refresh}>Retry connection</Button>
+                        </div>
+                    }}
+                    {if halted {
+                        <div className="crisis-notice notice-halt" role="alert">
+                            <div>
+                                <strong>Response halted</strong>
+                                <p>Autonomous processing is paused. A commander can resume it from the header.</p>
+                            </div>
+                        </div>
+                    } elif attention {
+                        <div className="crisis-notice notice-decision" role="status">
+                            <div>
+                                <strong>{"Commander review required" if view["escalated"] else "Dispatch approval required"}</strong>
+                                <p>{"The system needs a decision before it can continue." if view["escalated"] else "Review the proposed crews, destinations and risks before authorising dispatch."}</p>
+                            </div>
+                            <Button color="dark" onClick={openDecision}>Review decision</Button>
+                        </div>
+                    }}
+                    <ConsoleWorkspace
+                        view={view} canAct={actionsEnabled} mobile={isMobile} wide={isWide}
+                        tab={tab} onTab={pickTab} refresh={refresh}
                     />
-                    <div style={{"flex": 1, "minHeight": 0}}>
-                        {if tab == "map" {
-                            <MapPanel view={view} />
-                        } else {
-                            <ScrollArea h="100%">{panel(tab)}</ScrollArea>
-                        }}
-                    </div>
-                </div>
-            }}
-
-            {#* ---- DESKTOP / TABLET: map + side panel ---- *#}
-            {if signedIn and view and not isMobile {
-                <div style={{"display": "flex", "height": "100%"}}>
-                    <div style={{"flex": 1, "minWidth": 0}}>
-                        <MapPanel view={view} />
-                    </div>
-                    <div
-                        style={{
-                            "width": 420,
-                            "borderLeft": "1px solid var(--mantine-color-gray-3)",
-                            "display": "flex",
-                            "flexDirection": "column"
-                        }}
-                    >
-                        <Stack gap={0} p="xs">
-                            <SegmentedControl
-                                value={sideTab}
-                                onChange={pickTab}
-                                data={tabsFor(False)}
-                                fullWidth={True}
-                                size="xs"
-                            />
-                        </Stack>
-                        <ScrollArea style={{"flex": 1}}>{panel(sideTab)}</ScrollArea>
-                    </div>
                 </div>
             }}
         </AppShell.Main>

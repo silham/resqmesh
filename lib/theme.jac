@@ -5,8 +5,8 @@ the queue read at a glance."""
 import from "@mantine/core" { createTheme }
 
 glob:pub TEAL: list[str] = [
-    "#e6fcfb", "#d0f7f4", "#a1eee9", "#6ee4dd", "#48dcd3",
-    "#31d7cd", "#1fd3c8", "#0bbbb1", "#00a79d", "#009088"
+    "#effcf9", "#d8f4ed", "#b3e7db", "#83d6c5", "#54bda9",
+    "#2ea58f", "#188a77", "#0d7565", "#0b6255", "#084f45"
 ];
 
 glob:pub theme: any = createTheme({

@@ -32,6 +32,10 @@ def:pub ApprovalPanel(view: any, canAct: bool, refresh: Callable[[], None]) -> J
     }
 
     async def submit(decision: str) {
+        if not canAct or sending {
+            toastWarn("A commander and a fresh, running incident are required before making a decision.");
+            return;
+        }
         if decision == "modified" and not constraint {
             toastWarn("Pick a constraint to modify — an empty one is a pointless re-solve.");
             return;
@@ -42,7 +46,7 @@ def:pub ApprovalPanel(view: any, canAct: bool, refresh: Callable[[], None]) -> J
         try {
             # Only an approval can carry a broadcast; a rejection publishes nothing.
             await decide(decision, planVersion, constraint if constraint else None, decision == "approved" and publishAlerts);
-            toastOk("Plan v" + str(planVersion) + " " + decision);
+            toastOk("Decision queued for plan v" + str(planVersion) + ". Awaiting server confirmation.");
             # The constraint was spent on that plan. Left selected it would ride along on
             # the next one, as a chip that may no longer even be on screen.
             tokens = [];
@@ -119,7 +123,7 @@ def:pub ApprovalPanel(view: any, canAct: bool, refresh: Callable[[], None]) -> J
 
     <Stack gap="sm" p="md">
         <Group justify="space-between">
-            <Text fw={700}>Tier C — approval required</Text>
+            <Text fw={700} size="lg">Review dispatch plan</Text>
             <Badge color="yellow" variant="filled">
                 {"plan " + plan["plan_id"] + " v" + str(pending["plan_version"])}
             </Badge>
@@ -247,7 +251,7 @@ def:pub ApprovalPanel(view: any, canAct: bool, refresh: Callable[[], None]) -> J
 
         {if not canAct {
             <Text size="xs" c="dimmed">
-                You are signed in without commander authority, so you can read this plan but not authorise it.
+                Decisions require commander authority and a fresh incident that is running. You can still review the plan.
             </Text>
         }}
 
@@ -277,21 +281,21 @@ def:pub ApprovalPanel(view: any, canAct: bool, refresh: Callable[[], None]) -> J
                     <Button variant="default" onClick={cancelConfirm}>
                         Cancel
                     </Button>
-                    <Button color="teal" loading={sending} onClick={authorise}>
+                    <Button color="teal" disabled={not canAct} loading={sending} onClick={authorise}>
                         Authorise dispatch
                     </Button>
                 </Group>
             </Stack>
         </Modal>
 
-        <Group grow={True}>
+        <Group className="crisis-decision-actions">
             <Button color="teal" disabled={not canAct} loading={sending} onClick={approve}>
-                Approve
+                Review & approve
             </Button>
-            <Button color="blue" variant="light" disabled={not canAct} onClick={modify}>
+            <Button color="blue" variant="light" disabled={not canAct or sending} onClick={modify}>
                 Modify
             </Button>
-            <Button color="red" variant="light" disabled={not canAct} onClick={reject}>
+            <Button color="red" variant="light" disabled={not canAct or sending} onClick={reject}>
                 Reject
             </Button>
         </Group>
