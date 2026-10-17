@@ -264,12 +264,17 @@ Create a **Public Repository** resource, pick the **Dockerfile** build pack, bra
   random code>`, `JAC_SERVE_AUTH_SECRET=<a long random value>`, `RESQMESH_SALT=<a long random value>`,
   `RESQMESH_PUBLIC_HOST=<your domain>`, plus any of `GEMINI_API_KEY`, `GROQ_API_KEY`,
   `TELEGRAM_BOT_TOKEN`. Add `RESQMESH_DEMO=1` to start with the synthetic incident open.
-- **Persistent storage:** mount `/var/lib/resqmesh/jac` (the incident, roster and learned trust) and
-  `/app/outputs` (SITREP PDFs and routing graphs).
-- **Health check:** leave Coolify's health check **off**. With it on, Coolify starts the new container
-  while the old one is still running, and both open the same embedded database directory in
-  `/var/lib/resqmesh/jac`, which corrupts it. With it off, the old container stops first. The app
-  answers on `/healthz` if you want to check it by hand.
+- **Persistent storage:** mount `/app/outputs` (SITREP PDFs and routing graphs) and `/app/data` (the
+  real basin data). Mount `/var/lib/resqmesh/jac` too: it holds the unpacked runtime and, without
+  `JAC_DB_URL`, the embedded database.
+- **Database:** add a **PostgreSQL** database resource in the same Coolify project and environment,
+  copy its internal URL, and set `JAC_DB_URL` on the app to that URL, with the scheme written as
+  `postgresql://`. Without it the app keeps an embedded database inside the
+  `/var/lib/resqmesh/jac` volume, and a rolling update (which Coolify does whenever its health check
+  is on) starts the new container while the old one still has that database open, which corrupts
+  it. With an external database the two containers simply share one server.
+- **Health check:** with `JAC_DB_URL` set, path `/healthz`, port `8000`, start period 120 s. Without
+  it, leave Coolify's health check off so the old container stops before the new one starts.
 - **Secrets:** untick **Build Variable** on every environment variable, so keys and tokens are not
   passed as build arguments and printed in the build log.
 - **Memory:** the build needs about 3 GB free (it seals the app with `jac build`); the running container
