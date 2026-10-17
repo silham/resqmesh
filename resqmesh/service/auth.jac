@@ -102,8 +102,55 @@ node Member {
     }
 }
 
+"""Where the members hang. Looking up the caller happens on every protected request, and a
+walk over everything attached to the shared graph would load the incident along with the
+roster and write it straight back: its whole state, every time. The members therefore sit
+under their own node, which is found by id."""
+node Roster {
+    def __jac_access__ -> AccessLevel {
+        return AccessLevel.WRITE;
+    }
+}
+
+glob ROSTER_ID: dict[str, str] = {};
+
+"""The roster node, created on first use. Members an earlier version attached directly to
+the shared graph are moved under it."""
+def roster() -> Roster {
+    cached = ROSTER_ID.get("id", "");
+    if cached {
+        try {
+            found: any = jobj(cached);
+            if found is not None and isinstance(found, Roster) {
+                return found;
+            }
+        } except Exception {
+            log.debug("cached roster id no longer resolves; looking again");
+        }
+    }
+    holders: list[Roster] = [];
+    loose: list[Member] = [];
+    for n in [root.shared -->] {
+        if isinstance(n, Roster) {
+            holders.append(n);
+        } elif isinstance(n, Member) {
+            loose.append(n);
+        }
+    }
+    home = holders[0] if holders else Roster();
+    if not holders {
+        root.shared ++> home;
+    }
+    for m in loose {
+        root.shared del--> m;
+        home ++> m;
+    }
+    ROSTER_ID["id"] = jid(home);
+    return home;
+}
+
 def members() -> list[Member] {
-    return [m for m in [root.shared -->] if isinstance(m, Member)];
+    return [m for m in [roster() -->] if isinstance(m, Member)];
 }
 
 def find_member(username: str) -> Member | None {
@@ -186,7 +233,7 @@ def attach_member(
         user_id=user_id, root_id=root_id, username=name, display_name=display_name or name,
         role=role, vehicle_id=vehicle_id, label=label, created_at=utc_now().isoformat()
     );
-    root.shared ++> m;
+    roster() ++> m;
     return m;
 }
 

@@ -19,7 +19,7 @@ import from resqmesh.contracts.enums { ApprovalDecision, IncidentStatus, Locatio
 import from resqmesh.contracts.models { ActionTier, RawSignal, TraceEvent, evolve }
 import from resqmesh.contracts.state { copy_state, new_state }
 import from resqmesh.service.app { Runtime, _RUNTIME, build_service }
-import from resqmesh.service.auth { AuthSettings, AuthState, Member, members, require }
+import from resqmesh.service.auth { AuthSettings, AuthState, Member, members, require, roster }
 import from resqmesh.service.core {
     COMMAND_LOG, DEDUPE_WINDOW_S, Command, IncidentService, ServiceError
 }
@@ -67,7 +67,7 @@ def act_as(role: str, vehicle_id: str | None = None) -> Member {
         user_id=f"u-{uuid.uuid4().hex[:8]}", root_id=rid, username=f"{role}-{uuid.uuid4().hex[:8]}",
         display_name=f"{role} on duty", role=role, vehicle_id=vehicle_id
     );
-    root.shared ++> who;
+    roster() ++> who;
     return who;
 }
 

@@ -158,6 +158,30 @@ def make_poller(service: IncidentService, salt: str, webhook: bool) -> TelegramP
     return TelegramPoller(client=TelegramClient(token=token), submit=submit, salt=salt, long_poll_s=4);
 }
 
+"""The storage layer notes, once per datetime field, that it saves a timestamp as text. The
+value is stored and read back intact, but a single save of the incident repeats the note a
+couple of hundred times and buries every other line of the log. Dropped here, at the
+handlers, so it does not matter which logger raised it."""
+class QuietTimestampNote(logging.Filter) {
+    def filter(self: QuietTimestampNote, record: logging.LogRecord) -> bool {
+        return "Falling back to str() for datetime" not in record.getMessage();
+    }
+}
+
+def quiet_timestamp_note() -> None {
+    quiet = QuietTimestampNote();
+    seen: list[any] = [logging.getLogger()];
+    for name in list(logging.Logger.manager.loggerDict.keys()) {
+        seen.append(logging.getLogger(name));
+    }
+    for logger in seen {
+        logger.addFilter(quiet);
+        for handler in logger.handlers {
+            handler.addFilter(quiet);
+        }
+    }
+}
+
 """Everything a running server shares."""
 obj Runtime {
     has service: IncidentService,
@@ -202,6 +226,7 @@ def boot() -> Runtime {
         load_dotenv();   # a .env beside the project supplies keys and settings; real environment wins
         logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s");
         quiet_http_logging();   # before any request: Telegram URLs carry the bot token
+        quiet_timestamp_note();
         log.info("data directory %s (terrain %s, cwd %s)", data_dir(), "present" if dem_path().exists() else "missing", os.getcwd());
         settings = settings_from_env();
         if not settings.salt {
