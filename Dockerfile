@@ -40,6 +40,7 @@ EXPOSE 8000
 HEALTHCHECK --interval=15s --timeout=5s --start-period=120s --retries=5 \
     CMD curl -fsS http://localhost:8000/healthz || exit 1
 
+# The base image's entrypoint is already `jac`, so the command is its arguments only.
 # RESQMESH_DEMO=1 (set by docker-compose) opens the synthetic incident at start, so a
 # running system is there to look at. Remove it to start with a blank incident.
-CMD ["jac", "run", "--no-dev", "--host", "0.0.0.0", "--port", "8000", "dist/resqmesh.jab"]
+CMD ["run", "--no-dev", "--host", "0.0.0.0", "--port", "8000", "dist/resqmesh.jab"]
