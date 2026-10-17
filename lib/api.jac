@@ -21,7 +21,7 @@ glob CODE_STATUS: dict[str, int] = {
 };
 
 """The refusal inside a thrown endpoint error, as {status, code, message}."""
-def parseError(e: any) -> dict[str, any] {
+def:pub parseError(e: any) -> dict[str, any] {
     status: any = 0;
     message: any = "The request failed.";
     code: str = "";
@@ -61,22 +61,22 @@ def parseError(e: any) -> dict[str, any] {
 }
 
 """The sentence to show for a thrown endpoint error."""
-def errorText(e: any) -> str {
+def:pub errorText(e: any) -> str {
     return parseError(e)["message"];
 }
 
 """True when the server said this session is missing or no longer valid."""
-def isUnauthorized(e: any) -> bool {
+def:pub isUnauthorized(e: any) -> bool {
     err = parseError(e);
     return err["status"] == 401 or err["code"] == "unauthorized";
 }
 
 """Toast a failure."""
-def notifyError(e: any, title: str = "That did not work") -> None {
+def:pub notifyError(e: any, title: str = "That did not work") -> None {
     notifications.show({"title": title, "message": errorText(e), "color": "red"});
 }
 
 """Toast a success or an acknowledgement."""
-def notifyOk(message: str, title: str = "Done") -> None {
+def:pub notifyOk(message: str, title: str = "Done") -> None {
     notifications.show({"title": title, "message": message, "color": "teal"});
 }

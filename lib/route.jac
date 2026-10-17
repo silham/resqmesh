@@ -8,11 +8,11 @@ A point is a [lat, lon] pair, in Leaflet's order (the API sends GeoJSON [lon, la
 """
 
 """Route coordinates converted to Leaflet order."""
-def toLatLon(route: any) -> list[any] {
+def:pub toLatLon(route: any) -> list[any] {
     return [[c[1], c[0]] for c in route["coordinates"]];
 }
 
-def squaredGap(a: any, b: any) -> float {
+def:pub squaredGap(a: any, b: any) -> float {
     return (a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2;
 }
 
@@ -22,7 +22,7 @@ The API builds routes from the depot outwards, but the geometry comes from road 
 whose direction we do not control, so orientation is checked against the depot rather
 than assumed. Getting this backwards would animate every crew driving away from the
 emergency."""
-def orientedFromDepot(line: list[any], depot: any) -> list[any] {
+def:pub orientedFromDepot(line: list[any], depot: any) -> list[any] {
     if len(line) < 2 {
         return line;
     }
@@ -38,7 +38,7 @@ def orientedFromDepot(line: list[any], depot: any) -> list[any] {
 
 Interpolates on raw lat/lon. At basin scale the distortion is metres, far below the
 honesty of the estimate itself, so projecting properly would be false rigour."""
-def pointAlong(line: list[any], fraction: float) -> any {
+def:pub pointAlong(line: list[any], fraction: float) -> any {
     if len(line) == 0 {
         return None;
     }
@@ -78,7 +78,7 @@ reported nothing, because there is no channel for it to report on. Every caller 
 render the result as visibly provisional (a dashed, hollow marker) and say "est." in
 words. Returns None before approval: an unapproved plan is a proposal, and a proposal
 has no crew on the road to estimate."""
-def estimatedProgress(view: any, route: any, dispatchedAt: any, now: any) -> any {
+def:pub estimatedProgress(view: any, route: any, dispatchedAt: any, now: any) -> any {
     if dispatchedAt is None or not view["plan"] {
         return None;
     }

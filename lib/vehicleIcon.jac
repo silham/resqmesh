@@ -31,7 +31,7 @@ glob GLYPHS: dict[str, str] = {
 # A kind the fleet grows into with no glyph: a plain dot, still showing its state.
 glob FALLBACK: str = '<circle cx="8" cy="8" r="3.4"/>';
 
-def glyphFor(kind: str) -> str {
+def:pub glyphFor(kind: str) -> str {
     lowered = kind.lower();
     for key in ["boat", "ambulance", "truck"] {
         if key in lowered {
@@ -43,7 +43,7 @@ def glyphFor(kind: str) -> str {
 
 """The badge as raw SVG markup, shared by the map marker and the legend so the key on
 screen is drawn by the same code as the thing it explains."""
-def vehicleBadgeSvg(kind: str, dispatched: bool, size: int = 24) -> str {
+def:pub vehicleBadgeSvg(kind: str, dispatched: bool, size: int = 24) -> str {
     fill = DISPATCHED if dispatched else IDLE;
     ink = "#ffffff" if dispatched else INK;
     return (
@@ -55,7 +55,7 @@ def vehicleBadgeSvg(kind: str, dispatched: bool, size: int = 24) -> str {
 
 """A badge marker for one vehicle; `dispatched` fills it teal, so a commander can count
 committed crews without reading a single label."""
-def vehicleIcon(kind: str, dispatched: bool) -> any {
+def:pub vehicleIcon(kind: str, dispatched: bool) -> any {
     return divIcon({
         "html": vehicleBadgeSvg(kind, dispatched, BADGE),
         "className": "resqmesh-vehicle-marker",

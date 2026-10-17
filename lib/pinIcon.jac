@@ -17,7 +17,7 @@ glob PIN_SVG: str = (
 );
 
 """A teardrop pin whose point is the reported position, not its centre."""
-def pinIcon() -> any {
+def:pub pinIcon() -> any {
     return divIcon({
         "html": PIN_SVG,
         # Leaflet's default divIcon styling would draw a white box behind the SVG.
