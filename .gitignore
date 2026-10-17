@@ -30,3 +30,6 @@ data/cache/
 sitreps/
 logs/
 *.log
+
+# Evaluation output, rewritten by scripts/run_replay.jac and scripts/validate_hazard.jac
+outputs/

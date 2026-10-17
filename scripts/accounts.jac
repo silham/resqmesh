@@ -18,6 +18,7 @@ the shell history and in `ps`.
 
 import argparse;
 import getpass;
+import logging;
 import os;
 import sys;
 import httpx;
@@ -44,7 +45,11 @@ obj Server {
 
     def sign_in(username: str, password: str) -> None {
         res = httpx.post(
-            f"{self.base}/user/login", json={"identity": username, "credential": password}, timeout=30.0
+            f"{self.base}/user/login", json={
+                "identity": {"type": "username", "value": username},
+                "credential": {"type": "password", "password": password}
+            },
+            timeout=30.0
         );
         if res.status_code >= 400 {
             raise RuntimeError("sign-in refused: check the username and password");
@@ -142,6 +147,7 @@ def main(argv: list[str]) -> int {
 }
 
 with entry {
+    logging.getLogger("httpx").setLevel(logging.WARNING);
     argv = [a for a in sys.argv[1:] if not a.endswith(".jac")];
     exit_code = main(argv);
 }

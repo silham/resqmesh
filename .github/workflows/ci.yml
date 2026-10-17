@@ -90,4 +90,4 @@ jobs:
       # Compiles every page and component and bundles them: a broken import or a stale
       # endpoint signature fails here rather than in a browser.
       - name: Build the console
-        run: jac build main.jac
+        run: jac build -a client main.jac

@@ -137,7 +137,7 @@ def main(argv: list[str]) -> int {
     world: any = None;
     if args.world == "real" {
         clock = Clock(now=datetime.fromisoformat(args.at).replace(tzinfo=UTC));
-        print(f"World: real Kelani basin, rainfall replayed at {clock.now:%Y-%m-%d %H:%M} UTC");
+        print(f"World: real Kelani basin, rainfall replayed at {clock.now.strftime("%Y-%m-%d %H:%M")} UTC");
         world = real_world(out_dir, clock=clock.call, llm=llm);
         print(f"  {len(world.gazetteer.divisions)} GN divisions · {len(world.vehicles)} vehicles");
     } else {
