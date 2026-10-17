@@ -1,0 +1,36 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    # All keys are optional. Without them the system runs offline on its deterministic
+    # rule-based extractor. Copy .env.example to .env and add at least one key for live
+    # language-model extraction.
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      # "1" (default) seeds the synthetic incident: an instant running system.
+      # Start empty to drive it yourself (open the incident in the console, then feed
+      # reports from /report) with:   RESQMESH_DEMO="" docker compose up
+      # PowerShell:                   $env:RESQMESH_DEMO=""; docker compose up
+      RESQMESH_DEMO: "${RESQMESH_DEMO-1}"
+      RESQMESH_PUBLIC_HOST: "${RESQMESH_PUBLIC_HOST-localhost:8000}"
+    volumes:
+      # The incident, the roster and the learned source trust live in the graph store;
+      # the outputs hold SITREP PDFs and evaluation results.
+      - resqmesh-state:/var/lib/resqmesh/jac
+      - resqmesh-outputs:/app/outputs
+      - resqmesh-data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "-X", "POST", "-H", "content-type: application/json", "-d", "{}", "http://localhost:8000/function/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 120s
+
+volumes:
+  resqmesh-state:
+  resqmesh-outputs:
+  resqmesh-data:

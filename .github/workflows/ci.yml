@@ -1,0 +1,93 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  JAC_VERSION: "0.37.25"
+
+jobs:
+  quality:
+    name: check + tests + incident replay
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install the toolchain
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/jaseci-labs/jaseci/main/scripts/install.sh \
+            | bash -s -- --version "$JAC_VERSION"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - uses: actions/cache@v4
+        with:
+          path: .jac
+          key: jac-${{ runner.os }}-${{ hashFiles('jac.toml', 'jac.lock') }}
+
+      - name: Install dependencies
+        run: jac install
+
+      - name: Type-check
+        run: jac check
+
+      - name: Tests
+        run: jac test
+
+      # A skipped suite is indistinguishable from a passing one in the summary, so fail
+      # loudly if the heavy suites were not collected.
+      - name: Assert the heavy suites were collected
+        run: |
+          n=$(grep -c "^test " tests/optimiser_tests.jac tests/composition_tests.jac tests/supervisor_tests.jac | awk -F: '{s+=$2} END {print s}')
+          echo "found $n optimiser, composition and supervisor tests"
+          test "$n" -gt 20
+
+      - name: Offline end-to-end incident
+        run: jac run -b python --no-takeover scripts/demo.jac
+
+      # The primary safety gate. A malformed plan reaching the approval gate is the
+      # failure mode that would make an autonomous system in this domain unsafe to
+      # deploy, so this blocks the build rather than warning.
+      - name: Guardrail adversarial suite
+        run: jac test tests/adversarial_tests.jac tests/guardrail_tests.jac
+
+      # The scenario replay recomputes the hard constraints itself and fails the build
+      # on any violation.
+      - name: Replay metrics
+        run: jac run -b python --no-takeover scripts/run_replay.jac
+
+      - name: Upload metrics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: metrics
+          path: outputs/metrics.json
+          if-no-files-found: ignore
+
+  console:
+    name: console bundle
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install the toolchain
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/jaseci-labs/jaseci/main/scripts/install.sh \
+            | bash -s -- --version "$JAC_VERSION"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Install dependencies
+        run: jac install
+
+      # Compiles every page and component and bundles them: a broken import or a stale
+      # endpoint signature fails here rather than in a browser.
+      - name: Build the console
+        run: jac build main.jac

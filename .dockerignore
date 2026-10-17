@@ -1,0 +1,8 @@
+.git
+.jac
+node_modules
+data/raw
+data/cache
+outputs
+*.pkl
+.env

@@ -56,6 +56,10 @@ default = "server"
 [serve]
 docs_enabled = true
 
+[serve.auth]
+# Sessions last a day; a lost device is also revoked from the console.
+token_ttl_days = 1
+
 [serve.workers]
 count = "1"
 

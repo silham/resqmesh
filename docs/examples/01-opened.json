@@ -1,0 +1,461 @@
+{
+  "incident_id": "KLN-2026-014",
+  "goal": "coordinate the response to flooding in the Kelani basin",
+  "status": "planning",
+  "updated_at": "2026-10-17T05:37:40.231048Z",
+  "busy": false,
+  "awaiting_decision": null,
+  "escalated": null,
+  "clusters": [],
+  "queue": [],
+  "reports": [],
+  "unresolved": [],
+  "hazard": {
+    "schema_version": "1.0.0",
+    "surface_id": "HS-0001",
+    "version": 1,
+    "generated_at": "2026-10-17T05:37:40.098651Z",
+    "method": "buffer_proxy",
+    "confidence_0_1": 0.4,
+    "inundation_geojson": {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  79.91750004708966,
+                  6.90952033754339
+                ],
+                [
+                  79.91827371058938,
+                  6.909366530091135
+                ],
+                [
+                  79.91892958255451,
+                  6.908928559170423
+                ],
+                [
+                  79.91936781167416,
+                  6.908273102443723
+                ],
+                [
+                  79.91952168187794,
+                  6.907499947985323
+                ],
+                [
+                  79.91936776905305,
+                  6.906726802024293
+                ],
+                [
+                  79.91892950643201,
+                  6.906071368962156
+                ],
+                [
+                  79.9182736162753,
+                  6.905633431981543
+                ],
+                [
+                  79.91749995157352,
+                  6.905479662288913
+                ],
+                [
+                  79.89500004707513,
+                  6.905479677316065
+                ],
+                [
+                  79.89422638852352,
+                  6.905633446819671
+                ],
+                [
+                  79.89357050420062,
+                  6.906071380938378
+                ],
+                [
+                  79.8931322457947,
+                  6.906726808729958
+                ],
+                [
+                  79.89297833451032,
+                  6.907499947985623
+                ],
+                [
+                  79.89313220317386,
+                  6.908273095738604
+                ],
+                [
+                  79.89357042807859,
+                  6.908928547194601
+                ],
+                [
+                  79.89422629420997,
+                  6.909366515253209
+                ],
+                [
+                  79.89499995155943,
+                  6.909520322516244
+                ],
+                [
+                  79.91750004708966,
+                  6.90952033754339
+                ]
+              ]
+            ]
+          },
+          "properties": {
+            "kind": "inundation",
+            "method": "buffer_proxy",
+            "river_radius_m": 223.4,
+            "rain_24h_mm": 136.7
+          }
+        }
+      ]
+    },
+    "susceptibility_geojson": {
+      "type": "FeatureCollection",
+      "features": []
+    },
+    "impassable_edge_ids": [
+      "10-18-0",
+      "11-19-0",
+      "16-8-0",
+      "17-9-0",
+      "18-10-0",
+      "19-11-0",
+      "8-16-0",
+      "9-17-0"
+    ],
+    "no_go_gn_ids": [],
+    "driving_rainfall_mm_24h": 136.7
+  },
+  "plan": null,
+  "routes": [],
+  "blocked_roads_geojson": {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              79.9,
+              6.905
+            ],
+            [
+              79.9,
+              6.91
+            ]
+          ]
+        },
+        "properties": {
+          "edge_id": "8-16-0",
+          "status": "impassable"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              79.905,
+              6.905
+            ],
+            [
+              79.905,
+              6.91
+            ]
+          ]
+        },
+        "properties": {
+          "edge_id": "9-17-0",
+          "status": "impassable"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              79.91000000000001,
+              6.905
+            ],
+            [
+              79.91000000000001,
+              6.91
+            ]
+          ]
+        },
+        "properties": {
+          "edge_id": "10-18-0",
+          "status": "impassable"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              79.915,
+              6.905
+            ],
+            [
+              79.915,
+              6.91
+            ]
+          ]
+        },
+        "properties": {
+          "edge_id": "11-19-0",
+          "status": "impassable"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              79.9,
+              6.91
+            ],
+            [
+              79.9,
+              6.905
+            ]
+          ]
+        },
+        "properties": {
+          "edge_id": "16-8-0",
+          "status": "impassable"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              79.905,
+              6.91
+            ],
+            [
+              79.905,
+              6.905
+            ]
+          ]
+        },
+        "properties": {
+          "edge_id": "17-9-0",
+          "status": "impassable"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              79.91000000000001,
+              6.91
+            ],
+            [
+              79.91000000000001,
+              6.905
+            ]
+          ]
+        },
+        "properties": {
+          "edge_id": "18-10-0",
+          "status": "impassable"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              79.915,
+              6.91
+            ],
+            [
+              79.915,
+              6.905
+            ]
+          ]
+        },
+        "properties": {
+          "edge_id": "19-11-0",
+          "status": "impassable"
+        }
+      }
+    ]
+  },
+  "verdict": null,
+  "approvals": [],
+  "sitreps": [],
+  "alerts": [],
+  "completed_cluster_ids": [],
+  "commitments": [],
+  "vehicles": [
+    {
+      "schema_version": "1.0.0",
+      "vehicle_id": "BOAT-01",
+      "kind": "boat",
+      "capacity": 12,
+      "depot_gn_id": "KLN-006",
+      "depot_lat": 6.9,
+      "depot_lon": 79.92,
+      "available": true
+    },
+    {
+      "schema_version": "1.0.0",
+      "vehicle_id": "BOAT-02",
+      "kind": "boat",
+      "capacity": 8,
+      "depot_gn_id": "KLN-007",
+      "depot_lat": 6.915,
+      "depot_lon": 79.92,
+      "available": true
+    },
+    {
+      "schema_version": "1.0.0",
+      "vehicle_id": "AMB-01",
+      "kind": "ambulance",
+      "capacity": 4,
+      "depot_gn_id": "KLN-002",
+      "depot_lat": 6.905,
+      "depot_lon": 79.93,
+      "available": true
+    },
+    {
+      "schema_version": "1.0.0",
+      "vehicle_id": "TRK-01",
+      "kind": "truck",
+      "capacity": 12,
+      "depot_gn_id": "KLN-004",
+      "depot_lat": 6.92,
+      "depot_lon": 79.93,
+      "available": true
+    },
+    {
+      "schema_version": "1.0.0",
+      "vehicle_id": "TRK-02",
+      "kind": "truck",
+      "capacity": 10,
+      "depot_gn_id": "KLN-010",
+      "depot_lat": 6.925000000000001,
+      "depot_lon": 79.915,
+      "available": true
+    }
+  ],
+  "divisions": {
+    "KLN-001": {
+      "name": "Biyagama",
+      "lat": 6.9,
+      "lon": 79.905
+    },
+    "KLN-002": {
+      "name": "Kaduwela",
+      "lat": 6.905,
+      "lon": 79.93
+    },
+    "KLN-003": {
+      "name": "Kolonnawa",
+      "lat": 6.91,
+      "lon": 79.905
+    },
+    "KLN-004": {
+      "name": "Hanwella",
+      "lat": 6.92,
+      "lon": 79.93
+    },
+    "KLN-005": {
+      "name": "Avissawella",
+      "lat": 6.925000000000001,
+      "lon": 79.935
+    },
+    "KLN-006": {
+      "name": "Kelaniya",
+      "lat": 6.9,
+      "lon": 79.92
+    },
+    "KLN-007": {
+      "name": "Malabe",
+      "lat": 6.915,
+      "lon": 79.92
+    },
+    "KLN-008": {
+      "name": "Pahathgama",
+      "lat": 6.92,
+      "lon": 79.905
+    },
+    "KLN-009": {
+      "name": "Sedawatta",
+      "lat": 6.905,
+      "lon": 79.91000000000001
+    },
+    "KLN-010": {
+      "name": "Wellampitiya",
+      "lat": 6.925000000000001,
+      "lon": 79.915
+    }
+  },
+  "trace": [
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-7727b1a5872f",
+      "agent": "A0",
+      "action": "route:A2",
+      "tier": "A",
+      "occurred_at": "2026-10-17T05:37:40.098586Z",
+      "human_touch": false,
+      "detail": "no hazard surface yet"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-296e2c61f5d0",
+      "agent": "A2",
+      "action": "hazard_recomputed",
+      "tier": "A",
+      "occurred_at": "2026-10-17T05:37:40.098651Z",
+      "human_touch": false,
+      "detail": "method=buffer_proxy conf=0.40 rain24=137mm rain72=193mm driver=137mm nbro_level=2 impassable=8 no_go_gn=0 pruned=True | no DEM; susceptibility not assessed"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-40e3226cf7ae",
+      "agent": "A0",
+      "action": "route:__end__",
+      "tier": "A",
+      "occurred_at": "2026-10-17T05:37:40.231048Z",
+      "human_touch": false,
+      "detail": "converged; nothing due until new information arrives"
+    }
+  ],
+  "commands": [
+    {
+      "command_id": "CMD-6df12bc577",
+      "kind": "open",
+      "status": "done",
+      "detail": "",
+      "submitted_at": "2026-10-17T05:37:40.098413Z",
+      "finished_at": "2026-10-17T05:37:40.231152Z"
+    }
+  ],
+  "llm": {
+    "chain": [
+      "stub"
+    ],
+    "skipped": [],
+    "providers": [],
+    "offline_fallback": true
+  }
+}

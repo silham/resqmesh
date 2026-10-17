@@ -15,6 +15,7 @@ import os;
 import tempfile;
 import threading;
 import from datetime { datetime, timedelta, UTC }
+import from dotenv { load_dotenv }
 import from pathlib { Path }
 import from resqmesh.adapters.broadcast.telegram { TelegramChannelBroadcaster }
 import from resqmesh.adapters.fakes { StubLLM }
@@ -197,6 +198,7 @@ def boot() -> Runtime {
         if existing is not None {
             return existing;
         }
+        load_dotenv();   # a .env beside the project supplies keys and settings; real environment wins
         logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s");
         quiet_http_logging();   # before any request: Telegram URLs carry the bot token
         settings = settings_from_env();

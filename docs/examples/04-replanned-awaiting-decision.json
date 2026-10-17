@@ -1,0 +1,1682 @@
+{
+  "incident_id": "KLN-2026-014",
+  "goal": "coordinate the response to flooding in the Kelani basin",
+  "status": "awaiting_approval",
+  "updated_at": "2026-10-17T05:37:41.199131Z",
+  "busy": false,
+  "awaiting_decision": {
+    "plan_id": "PLN-0002",
+    "plan_version": 2,
+    "requested_at": "2026-10-17T05:37:41.199131Z"
+  },
+  "escalated": null,
+  "clusters": [
+    {
+      "schema_version": "1.0.0",
+      "cluster_id": "CL-0001",
+      "member_report_ids": [
+        "R-S001",
+        "R-S002",
+        "R-S003"
+      ],
+      "centroid_lat": 6.91,
+      "centroid_lon": 79.905,
+      "gn_id": "KLN-003",
+      "hazard_type": "flood",
+      "confidence_0_1": 0.8984,
+      "state": "corroborated",
+      "first_seen": "2026-10-17T05:07:40.232551Z",
+      "last_seen": "2026-10-17T05:16:40.232551Z",
+      "contradiction_flag": false,
+      "corroborating_source_count": 3,
+      "merged_from": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "cluster_id": "CL-0002",
+      "member_report_ids": [
+        "R-S004",
+        "R-S005",
+        "R-S006"
+      ],
+      "centroid_lat": 6.900000000000001,
+      "centroid_lon": 79.905,
+      "gn_id": "KLN-001",
+      "hazard_type": "road_blocked",
+      "confidence_0_1": 0.4,
+      "state": "single_source",
+      "first_seen": "2026-10-17T05:09:40.232551Z",
+      "last_seen": "2026-10-17T05:18:40.232551Z",
+      "contradiction_flag": false,
+      "corroborating_source_count": 1,
+      "merged_from": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "cluster_id": "CL-0003",
+      "member_report_ids": [
+        "R-S007",
+        "R-S008"
+      ],
+      "centroid_lat": 6.915,
+      "centroid_lon": 79.92,
+      "gn_id": "KLN-007",
+      "hazard_type": "flood",
+      "confidence_0_1": 0.24,
+      "state": "unresolved",
+      "first_seen": "2026-10-17T05:12:40.232551Z",
+      "last_seen": "2026-10-17T05:19:40.232551Z",
+      "contradiction_flag": true,
+      "corroborating_source_count": 1,
+      "merged_from": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "cluster_id": "CL-0004",
+      "member_report_ids": [
+        "R-S009",
+        "R-S010"
+      ],
+      "centroid_lat": 6.92,
+      "centroid_lon": 79.93,
+      "gn_id": "KLN-004",
+      "hazard_type": "medical",
+      "confidence_0_1": 0.7822,
+      "state": "corroborated",
+      "first_seen": "2026-10-17T05:14:40.232551Z",
+      "last_seen": "2026-10-17T05:17:40.232551Z",
+      "contradiction_flag": false,
+      "corroborating_source_count": 2,
+      "merged_from": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "cluster_id": "CL-0005",
+      "member_report_ids": [
+        "R-S012",
+        "R-S013"
+      ],
+      "centroid_lat": 6.92,
+      "centroid_lon": 79.905,
+      "gn_id": "KLN-008",
+      "hazard_type": "flood",
+      "confidence_0_1": 0.64,
+      "state": "corroborated",
+      "first_seen": "2026-10-17T05:27:40.232551Z",
+      "last_seen": "2026-10-17T05:30:40.232551Z",
+      "contradiction_flag": false,
+      "corroborating_source_count": 2,
+      "merged_from": []
+    }
+  ],
+  "queue": [
+    {
+      "schema_version": "1.0.0",
+      "cluster_id": "CL-0001",
+      "rank": 1,
+      "score_0_1": 0.51221,
+      "components": {
+        "schema_version": "1.0.0",
+        "hazard_severity": 0.137255,
+        "population_exposure": 0.550671,
+        "vulnerability": 0.4,
+        "time_criticality": 0.765008,
+        "cluster_confidence": 0.8984
+      },
+      "weights": {
+        "hazard_severity": 0.25,
+        "population_exposure": 0.2,
+        "vulnerability": 0.2,
+        "time_criticality": 0.2,
+        "cluster_confidence": 0.15
+      },
+      "rationale_text": "#1 flood at KLN-003, score 0.51, driven by time criticality 0.77x0.20 and evidence confidence 0.90x0.15. reported severity 2/4; 12 people reported; needs: children present, elderly; heavy rain (137 mm/24 h); confidence 0.90 (corroborated, 3 sources)."
+    },
+    {
+      "schema_version": "1.0.0",
+      "cluster_id": "CL-0004",
+      "rank": 2,
+      "score_0_1": 0.467356,
+      "components": {
+        "schema_version": "1.0.0",
+        "hazard_severity": 0.205882,
+        "population_exposure": 0.181269,
+        "vulnerability": 0.45,
+        "time_criticality": 0.861508,
+        "cluster_confidence": 0.7822
+      },
+      "weights": {
+        "hazard_severity": 0.25,
+        "population_exposure": 0.2,
+        "vulnerability": 0.2,
+        "time_criticality": 0.2,
+        "cluster_confidence": 0.15
+      },
+      "rationale_text": "#2 medical at KLN-004, score 0.47, driven by time criticality 0.86x0.20 and evidence confidence 0.78x0.15. reported severity 2/4; 3 people reported; needs: medical dependency; confidence 0.78 (corroborated, 2 sources)."
+    },
+    {
+      "schema_version": "1.0.0",
+      "cluster_id": "CL-0005",
+      "rank": 3,
+      "score_0_1": 0.464275,
+      "components": {
+        "schema_version": "1.0.0",
+        "hazard_severity": 0.154412,
+        "population_exposure": 0.413354,
+        "vulnerability": 0.48,
+        "time_criticality": 0.755008,
+        "cluster_confidence": 0.64
+      },
+      "weights": {
+        "hazard_severity": 0.25,
+        "population_exposure": 0.2,
+        "vulnerability": 0.2,
+        "time_criticality": 0.2,
+        "cluster_confidence": 0.15
+      },
+      "rationale_text": "#3 flood at KLN-008, score 0.46, driven by time criticality 0.76x0.20 and vulnerability 0.48x0.20. reported severity 2/4; 8 people reported; needs: children present, mobility limited; heavy rain (137 mm/24 h); confidence 0.64 (corroborated, 2 sources)."
+    },
+    {
+      "schema_version": "1.0.0",
+      "cluster_id": "CL-0003",
+      "rank": 4,
+      "score_0_1": 0.240063,
+      "components": {
+        "schema_version": "1.0.0",
+        "hazard_severity": 0.051471,
+        "population_exposure": 0.283469,
+        "vulnerability": 0.0,
+        "time_criticality": 0.762508,
+        "cluster_confidence": 0.12
+      },
+      "weights": {
+        "hazard_severity": 0.25,
+        "population_exposure": 0.2,
+        "vulnerability": 0.2,
+        "time_criticality": 0.2,
+        "cluster_confidence": 0.15
+      },
+      "rationale_text": "#4 flood at KLN-007, score 0.24, driven by time criticality 0.76x0.20 and people exposed 0.28x0.20. reported severity 1/4; 5 people reported; heavy rain (137 mm/24 h); confidence 0.12 (unresolved, 1 sources)."
+    },
+    {
+      "schema_version": "1.0.0",
+      "cluster_id": "CL-0002",
+      "rank": 5,
+      "score_0_1": 0.189958,
+      "components": {
+        "schema_version": "1.0.0",
+        "hazard_severity": 0.068627,
+        "population_exposure": 0.25,
+        "vulnerability": 0.0,
+        "time_criticality": 0.314008,
+        "cluster_confidence": 0.4
+      },
+      "weights": {
+        "hazard_severity": 0.25,
+        "population_exposure": 0.2,
+        "vulnerability": 0.2,
+        "time_criticality": 0.2,
+        "cluster_confidence": 0.15
+      },
+      "rationale_text": "#5 road blocked at KLN-001, score 0.19, driven by time criticality 0.31x0.20 and evidence confidence 0.40x0.15. reported severity 1/4; number of people unknown; confidence 0.40 (single_source, 1 sources)."
+    }
+  ],
+  "reports": [
+    {
+      "schema_version": "1.0.0",
+      "report_id": "R-S001",
+      "signal_id": "S001",
+      "source_id": "src:a1",
+      "hazard_type": "flood",
+      "description": "Flooding in Kolonnawa, 12 people trapped, elderly couple on the roof. Urgent!",
+      "raw_place_text": "Flooding",
+      "observed_at": "2026-10-17T05:07:40.232551Z",
+      "resolved_gn_id": "KLN-003",
+      "lat": 6.91,
+      "lon": 79.905,
+      "location_source": "place_text",
+      "location_accuracy_m": null,
+      "severity_claim": 2,
+      "reported_people_affected": 12,
+      "vulnerability_flags": [
+        "elderly"
+      ],
+      "extraction_confidence": 0.7
+    },
+    {
+      "schema_version": "1.0.0",
+      "report_id": "R-S002",
+      "signal_id": "S002",
+      "source_id": "src:b2",
+      "hazard_type": "flood",
+      "description": "Water rising fast at Kolonnawa, children stranded",
+      "raw_place_text": "Water",
+      "observed_at": "2026-10-17T05:11:40.232551Z",
+      "resolved_gn_id": "KLN-003",
+      "lat": 6.91,
+      "lon": 79.905,
+      "location_source": "place_text",
+      "location_accuracy_m": null,
+      "severity_claim": 1,
+      "reported_people_affected": null,
+      "vulnerability_flags": [
+        "children_present"
+      ],
+      "extraction_confidence": 0.7
+    },
+    {
+      "schema_version": "1.0.0",
+      "report_id": "R-S003",
+      "signal_id": "S003",
+      "source_id": "src:c3",
+      "hazard_type": "flood",
+      "description": "Kolonnawa families stranded, water above knee level",
+      "raw_place_text": "Kolonnawa",
+      "observed_at": "2026-10-17T05:16:40.232551Z",
+      "resolved_gn_id": "KLN-003",
+      "lat": 6.91,
+      "lon": 79.905,
+      "location_source": "place_text",
+      "location_accuracy_m": null,
+      "severity_claim": 1,
+      "reported_people_affected": null,
+      "vulnerability_flags": [],
+      "extraction_confidence": 0.7
+    },
+    {
+      "schema_version": "1.0.0",
+      "report_id": "R-S004",
+      "signal_id": "S004",
+      "source_id": "src:d4",
+      "hazard_type": "road_blocked",
+      "description": "Culvert collapsed near Biyagama, road blocked",
+      "raw_place_text": "Culvert",
+      "observed_at": "2026-10-17T05:09:40.232551Z",
+      "resolved_gn_id": "KLN-001",
+      "lat": 6.9,
+      "lon": 79.905,
+      "location_source": "place_text",
+      "location_accuracy_m": null,
+      "severity_claim": 1,
+      "reported_people_affected": null,
+      "vulnerability_flags": [],
+      "extraction_confidence": 0.7
+    },
+    {
+      "schema_version": "1.0.0",
+      "report_id": "R-S005",
+      "signal_id": "S005",
+      "source_id": "src:d4",
+      "hazard_type": "road_blocked",
+      "description": "Biyagama culvert gone, road impassable",
+      "raw_place_text": "Biyagama",
+      "observed_at": "2026-10-17T05:13:40.232551Z",
+      "resolved_gn_id": "KLN-001",
+      "lat": 6.9,
+      "lon": 79.905,
+      "location_source": "place_text",
+      "location_accuracy_m": null,
+      "severity_claim": 0,
+      "reported_people_affected": null,
+      "vulnerability_flags": [],
+      "extraction_confidence": 0.7
+    },
+    {
+      "schema_version": "1.0.0",
+      "report_id": "R-S006",
+      "signal_id": "S006",
+      "source_id": "src:d4",
+      "hazard_type": "road_blocked",
+      "description": "Still blocked at Biyagama culvert",
+      "raw_place_text": "Still",
+      "observed_at": "2026-10-17T05:18:40.232551Z",
+      "resolved_gn_id": "KLN-001",
+      "lat": 6.9,
+      "lon": 79.905,
+      "location_source": "place_text",
+      "location_accuracy_m": null,
+      "severity_claim": 1,
+      "reported_people_affected": null,
+      "vulnerability_flags": [],
+      "extraction_confidence": 0.7
+    },
+    {
+      "schema_version": "1.0.0",
+      "report_id": "R-S007",
+      "signal_id": "S007",
+      "source_id": "src:e5",
+      "hazard_type": "flood",
+      "description": "Flooding at Malabe junction, 5 people need help",
+      "raw_place_text": "Flooding",
+      "observed_at": "2026-10-17T05:12:40.232551Z",
+      "resolved_gn_id": "KLN-007",
+      "lat": 6.915,
+      "lon": 79.92,
+      "location_source": "place_text",
+      "location_accuracy_m": null,
+      "severity_claim": 1,
+      "reported_people_affected": 5,
+      "vulnerability_flags": [],
+      "extraction_confidence": 0.7
+    },
+    {
+      "schema_version": "1.0.0",
+      "report_id": "R-S008",
+      "signal_id": "S008",
+      "source_id": "src:f6",
+      "hazard_type": "flood",
+      "description": "Malabe water has receded, all clear",
+      "raw_place_text": "Malabe",
+      "observed_at": "2026-10-17T05:19:40.232551Z",
+      "resolved_gn_id": "KLN-007",
+      "lat": 6.915,
+      "lon": 79.92,
+      "location_source": "place_text",
+      "location_accuracy_m": null,
+      "severity_claim": 0,
+      "reported_people_affected": null,
+      "vulnerability_flags": [],
+      "extraction_confidence": 0.7
+    },
+    {
+      "schema_version": "1.0.0",
+      "report_id": "R-S009",
+      "signal_id": "S009",
+      "source_id": "src:g7",
+      "hazard_type": "medical",
+      "description": "Patient needs dialysis at Hanwella, 3 people cannot leave. Critical",
+      "raw_place_text": "Patient",
+      "observed_at": "2026-10-17T05:14:40.232551Z",
+      "resolved_gn_id": "KLN-004",
+      "lat": 6.92,
+      "lon": 79.93,
+      "location_source": "place_text",
+      "location_accuracy_m": null,
+      "severity_claim": 2,
+      "reported_people_affected": 3,
+      "vulnerability_flags": [
+        "medical_dependency"
+      ],
+      "extraction_confidence": 0.7
+    },
+    {
+      "schema_version": "1.0.0",
+      "report_id": "R-S010",
+      "signal_id": "S010",
+      "source_id": "src:h8",
+      "hazard_type": "medical",
+      "description": "Hanwella dialysis patient confirmed, urgent medical help",
+      "raw_place_text": "Hanwella",
+      "observed_at": "2026-10-17T05:17:40.232551Z",
+      "resolved_gn_id": "KLN-004",
+      "lat": 6.92,
+      "lon": 79.93,
+      "location_source": "place_text",
+      "location_accuracy_m": null,
+      "severity_claim": 2,
+      "reported_people_affected": null,
+      "vulnerability_flags": [
+        "medical_dependency"
+      ],
+      "extraction_confidence": 0.7
+    },
+    {
+      "schema_version": "1.0.0",
+      "report_id": "R-S011",
+      "signal_id": "S011",
+      "source_id": "src:i9",
+      "hazard_type": "flood",
+      "description": "Water entering houses near the old temple",
+      "raw_place_text": "Water",
+      "observed_at": "2026-10-17T05:15:40.232551Z",
+      "resolved_gn_id": null,
+      "lat": null,
+      "lon": null,
+      "location_source": "none",
+      "location_accuracy_m": null,
+      "severity_claim": 1,
+      "reported_people_affected": null,
+      "vulnerability_flags": [],
+      "extraction_confidence": 0.7
+    },
+    {
+      "schema_version": "1.0.0",
+      "report_id": "R-S012",
+      "signal_id": "S012",
+      "source_id": "src:j10",
+      "hazard_type": "flood",
+      "description": "Flooding in Pahathgama, 8 people trapped, wheelchair user",
+      "raw_place_text": "Flooding",
+      "observed_at": "2026-10-17T05:27:40.232551Z",
+      "resolved_gn_id": "KLN-008",
+      "lat": 6.92,
+      "lon": 79.905,
+      "location_source": "place_text",
+      "location_accuracy_m": null,
+      "severity_claim": 1,
+      "reported_people_affected": 8,
+      "vulnerability_flags": [
+        "mobility_limited"
+      ],
+      "extraction_confidence": 0.7
+    },
+    {
+      "schema_version": "1.0.0",
+      "report_id": "R-S013",
+      "signal_id": "S013",
+      "source_id": "src:k11",
+      "hazard_type": "flood",
+      "description": "Pahathgama flood, urgent, family with baby trapped",
+      "raw_place_text": "Pahathgama",
+      "observed_at": "2026-10-17T05:30:40.232551Z",
+      "resolved_gn_id": "KLN-008",
+      "lat": 6.92,
+      "lon": 79.905,
+      "location_source": "place_text",
+      "location_accuracy_m": null,
+      "severity_claim": 2,
+      "reported_people_affected": null,
+      "vulnerability_flags": [
+        "children_present"
+      ],
+      "extraction_confidence": 0.7
+    }
+  ],
+  "unresolved": [
+    {
+      "schema_version": "1.0.0",
+      "report_id": "R-S011",
+      "signal_id": "S011",
+      "source_id": "src:i9",
+      "hazard_type": "flood",
+      "description": "Water entering houses near the old temple",
+      "raw_place_text": "Water",
+      "observed_at": "2026-10-17T05:15:40.232551Z",
+      "resolved_gn_id": null,
+      "lat": null,
+      "lon": null,
+      "location_source": "none",
+      "location_accuracy_m": null,
+      "severity_claim": 1,
+      "reported_people_affected": null,
+      "vulnerability_flags": [],
+      "extraction_confidence": 0.7
+    }
+  ],
+  "hazard": {
+    "schema_version": "1.0.0",
+    "surface_id": "HS-0001",
+    "version": 1,
+    "generated_at": "2026-10-17T05:37:40.098651Z",
+    "method": "buffer_proxy",
+    "confidence_0_1": 0.4,
+    "inundation_geojson": {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  79.91750004708966,
+                  6.90952033754339
+                ],
+                [
+                  79.91827371058938,
+                  6.909366530091135
+                ],
+                [
+                  79.91892958255451,
+                  6.908928559170423
+                ],
+                [
+                  79.91936781167416,
+                  6.908273102443723
+                ],
+                [
+                  79.91952168187794,
+                  6.907499947985323
+                ],
+                [
+                  79.91936776905305,
+                  6.906726802024293
+                ],
+                [
+                  79.91892950643201,
+                  6.906071368962156
+                ],
+                [
+                  79.9182736162753,
+                  6.905633431981543
+                ],
+                [
+                  79.91749995157352,
+                  6.905479662288913
+                ],
+                [
+                  79.89500004707513,
+                  6.905479677316065
+                ],
+                [
+                  79.89422638852352,
+                  6.905633446819671
+                ],
+                [
+                  79.89357050420062,
+                  6.906071380938378
+                ],
+                [
+                  79.8931322457947,
+                  6.906726808729958
+                ],
+                [
+                  79.89297833451032,
+                  6.907499947985623
+                ],
+                [
+                  79.89313220317386,
+                  6.908273095738604
+                ],
+                [
+                  79.89357042807859,
+                  6.908928547194601
+                ],
+                [
+                  79.89422629420997,
+                  6.909366515253209
+                ],
+                [
+                  79.89499995155943,
+                  6.909520322516244
+                ],
+                [
+                  79.91750004708966,
+                  6.90952033754339
+                ]
+              ]
+            ]
+          },
+          "properties": {
+            "kind": "inundation",
+            "method": "buffer_proxy",
+            "river_radius_m": 223.4,
+            "rain_24h_mm": 136.7
+          }
+        }
+      ]
+    },
+    "susceptibility_geojson": {
+      "type": "FeatureCollection",
+      "features": []
+    },
+    "impassable_edge_ids": [
+      "10-18-0",
+      "11-19-0",
+      "16-8-0",
+      "17-9-0",
+      "18-10-0",
+      "19-11-0",
+      "8-16-0",
+      "9-17-0"
+    ],
+    "no_go_gn_ids": [],
+    "driving_rainfall_mm_24h": 136.7
+  },
+  "plan": {
+    "schema_version": "1.0.0",
+    "plan_id": "PLN-0002",
+    "version": 2,
+    "generated_at": "2026-10-17T05:37:41.193649Z",
+    "assignments": [
+      {
+        "schema_version": "1.0.0",
+        "vehicle_id": "BOAT-01",
+        "cluster_id": "CL-0001",
+        "route_edge_ids": [
+          "4-12-0",
+          "12-20-0",
+          "20-19-0",
+          "19-18-0",
+          "18-17-0"
+        ],
+        "eta_minutes": 4.876,
+        "distance_km": 2.768,
+        "load": 12,
+        "access_segments": []
+      },
+      {
+        "schema_version": "1.0.0",
+        "vehicle_id": "TRK-01",
+        "cluster_id": "CL-0004",
+        "route_edge_ids": [],
+        "eta_minutes": 0.0,
+        "distance_km": 0.0,
+        "load": 3,
+        "access_segments": []
+      },
+      {
+        "schema_version": "1.0.0",
+        "vehicle_id": "TRK-02",
+        "cluster_id": "CL-0005",
+        "route_edge_ids": [
+          "43-42-0",
+          "42-41-0",
+          "41-33-0"
+        ],
+        "eta_minutes": 3.984,
+        "distance_km": 1.66,
+        "load": 8,
+        "access_segments": []
+      }
+    ],
+    "objective_value": 1.8497,
+    "solver_status": "optimal",
+    "solve_seconds": 0.005,
+    "warm_started": true,
+    "input_surface_version": 1,
+    "input_queue_hash": "4014214cbe2be2cd",
+    "unassigned_cluster_ids": [
+      "CL-0001",
+      "CL-0004",
+      "CL-0003",
+      "CL-0002"
+    ],
+    "optimality_gap": 0.0,
+    "commander_constraints": []
+  },
+  "routes": [
+    {
+      "vehicle_id": "BOAT-01",
+      "cluster_id": "CL-0001",
+      "coordinates": [
+        [
+          79.92,
+          6.9
+        ],
+        [
+          79.92,
+          6.905
+        ],
+        [
+          79.92,
+          6.91
+        ],
+        [
+          79.915,
+          6.91
+        ],
+        [
+          79.91000000000001,
+          6.91
+        ],
+        [
+          79.905,
+          6.91
+        ]
+      ],
+      "approximate": false
+    },
+    {
+      "vehicle_id": "TRK-01",
+      "cluster_id": "CL-0004",
+      "coordinates": [
+        [
+          79.93,
+          6.92
+        ],
+        [
+          79.93,
+          6.92
+        ]
+      ],
+      "approximate": false
+    },
+    {
+      "vehicle_id": "TRK-02",
+      "cluster_id": "CL-0005",
+      "coordinates": [
+        [
+          79.915,
+          6.925000000000001
+        ],
+        [
+          79.91000000000001,
+          6.925000000000001
+        ],
+        [
+          79.905,
+          6.925000000000001
+        ],
+        [
+          79.905,
+          6.92
+        ]
+      ],
+      "approximate": false
+    }
+  ],
+  "blocked_roads_geojson": {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              79.9,
+              6.905
+            ],
+            [
+              79.9,
+              6.91
+            ]
+          ]
+        },
+        "properties": {
+          "edge_id": "8-16-0",
+          "status": "impassable"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              79.905,
+              6.905
+            ],
+            [
+              79.905,
+              6.91
+            ]
+          ]
+        },
+        "properties": {
+          "edge_id": "9-17-0",
+          "status": "impassable"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              79.91000000000001,
+              6.905
+            ],
+            [
+              79.91000000000001,
+              6.91
+            ]
+          ]
+        },
+        "properties": {
+          "edge_id": "10-18-0",
+          "status": "impassable"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              79.915,
+              6.905
+            ],
+            [
+              79.915,
+              6.91
+            ]
+          ]
+        },
+        "properties": {
+          "edge_id": "11-19-0",
+          "status": "impassable"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              79.9,
+              6.91
+            ],
+            [
+              79.9,
+              6.905
+            ]
+          ]
+        },
+        "properties": {
+          "edge_id": "16-8-0",
+          "status": "impassable"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              79.905,
+              6.91
+            ],
+            [
+              79.905,
+              6.905
+            ]
+          ]
+        },
+        "properties": {
+          "edge_id": "17-9-0",
+          "status": "impassable"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              79.91000000000001,
+              6.91
+            ],
+            [
+              79.91000000000001,
+              6.905
+            ]
+          ]
+        },
+        "properties": {
+          "edge_id": "18-10-0",
+          "status": "impassable"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              79.915,
+              6.91
+            ],
+            [
+              79.915,
+              6.905
+            ]
+          ]
+        },
+        "properties": {
+          "edge_id": "19-11-0",
+          "status": "impassable"
+        }
+      }
+    ]
+  },
+  "verdict": {
+    "schema_version": "1.0.0",
+    "plan_id": "PLN-0002",
+    "plan_version": 2,
+    "passed": true,
+    "checks": [
+      {
+        "schema_version": "1.0.0",
+        "name": "targets_exist",
+        "passed": true,
+        "detail": "all assignments resolve to known state"
+      },
+      {
+        "schema_version": "1.0.0",
+        "name": "gazetteer_membership",
+        "passed": true,
+        "detail": "every destination is a real GN division"
+      },
+      {
+        "schema_version": "1.0.0",
+        "name": "no_go_intersection",
+        "passed": true,
+        "detail": "no journey crosses a no-go segment, on or off the graph"
+      },
+      {
+        "schema_version": "1.0.0",
+        "name": "vehicle_capacity",
+        "passed": true,
+        "detail": "no vehicle over capacity"
+      },
+      {
+        "schema_version": "1.0.0",
+        "name": "tier_c_confidence_floor",
+        "passed": true,
+        "detail": "every dispatched cluster is resolved and >= 0.50"
+      }
+    ],
+    "evaluated_at": "2026-10-17T05:37:41.198954Z",
+    "violated_constraint": null,
+    "remediation_hint": null
+  },
+  "approvals": [
+    {
+      "schema_version": "1.0.0",
+      "approval_id": "APV-8dcaccc986",
+      "plan_id": "PLN-0001",
+      "plan_version": 1,
+      "tier": "C",
+      "decision": "approved",
+      "commander_id": "cmdr-01",
+      "decided_at": "2026-10-17T05:37:41.100069Z",
+      "constraint_note": null,
+      "publish_alerts": true
+    }
+  ],
+  "sitreps": [
+    {
+      "schema_version": "1.0.0",
+      "sitrep_id": "SR-KLN-2026-014-v1",
+      "generated_at": "2026-10-17T05:37:41.100214Z",
+      "pdf_path": "/var/folders/b0/pxzt9q9d43gdv5n9sjghb_5m0000gn/T/resqmesh-graphs-1qj6pbfg/sitreps/SR-KLN-2026-014-v1.pdf",
+      "claims": [
+        {
+          "schema_version": "1.0.0",
+          "sentence": "Hazard surface v1: inundation modelled via BUFFER_PROXY at 137 mm/24h; 8 road segment(s) impassable.",
+          "source_ref": "HS-0001"
+        },
+        {
+          "schema_version": "1.0.0",
+          "sentence": "Kolonnawa: flood reported, confidence 0.78 (corroborated), 3 corroborating source(s).",
+          "source_ref": "CL-0001"
+        },
+        {
+          "schema_version": "1.0.0",
+          "sentence": "Hanwella: medical reported, confidence 0.64 (corroborated), 2 corroborating source(s).",
+          "source_ref": "CL-0004"
+        },
+        {
+          "schema_version": "1.0.0",
+          "sentence": "Biyagama: road_blocked reported, confidence 0.40 (single_source), 1 corroborating source(s).",
+          "source_ref": "CL-0002"
+        },
+        {
+          "schema_version": "1.0.0",
+          "sentence": "Malabe: flood reported, confidence 0.24 (unresolved), 1 corroborating source(s).",
+          "source_ref": "CL-0003"
+        },
+        {
+          "schema_version": "1.0.0",
+          "sentence": "Dispatch plan v1: 2 assignment(s), solver optimal, optimality gap 0.0%.",
+          "source_ref": "PLN-0001"
+        },
+        {
+          "schema_version": "1.0.0",
+          "sentence": "BOAT-01 assigned to CL-0001, ETA 5 min over 2.8 km.",
+          "source_ref": "PLN-0001"
+        },
+        {
+          "schema_version": "1.0.0",
+          "sentence": "TRK-01 assigned to CL-0004, ETA 0 min over 0.0 km.",
+          "source_ref": "PLN-0001"
+        }
+      ],
+      "hazard_method": "buffer_proxy",
+      "hash": "58850bc78db1f30935f90aa4374c2f68312fbb8be1d19c9669dc982bda2fac48",
+      "plan_version": 1,
+      "degraded_notice": "Hazard estimated by buffer-proxy fallback (HAND unavailable); treat inundation extent as reduced-confidence.",
+      "prev_hash": null
+    }
+  ],
+  "alerts": [
+    {
+      "schema_version": "1.0.0",
+      "alert_id": "AL-KLN-2026-014-v1-1",
+      "template_id": "flood_warning",
+      "slots": {
+        "area": "Kolonnawa"
+      },
+      "text_si": "Kolonnawa සඳහා ගංවතුර අනතුරු ඇඟවීමයි. ජල මට්ටම ඉහළ යමින් පවතී. උස් බිමකට යාමට සූදානම් වන්න.",
+      "text_ta": "Kolonnawa பகுதிக்கு வெள்ள எச்சரிக்கை. நீர்மட்டம் உயர்ந்து வருகிறது. உயரமான இடத்திற்குச் செல்லத் தயாராகுங்கள்.",
+      "text_en": "FLOOD WARNING for Kolonnawa. Water rising. Prepare to move to higher ground.",
+      "target_gn_ids": [
+        "KLN-003"
+      ],
+      "approval_id": "APV-8dcaccc986",
+      "issued_at": "2026-10-17T05:37:41.100214Z",
+      "status": "published",
+      "expires_at": "2026-10-17T11:37:41.100214Z",
+      "superseded_by": null,
+      "stood_down_by": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "alert_id": "AL-KLN-2026-014-v1-2",
+      "template_id": "flood_warning",
+      "slots": {
+        "area": "Hanwella"
+      },
+      "text_si": "Hanwella සඳහා ගංවතුර අනතුරු ඇඟවීමයි. ජල මට්ටම ඉහළ යමින් පවතී. උස් බිමකට යාමට සූදානම් වන්න.",
+      "text_ta": "Hanwella பகுதிக்கு வெள்ள எச்சரிக்கை. நீர்மட்டம் உயர்ந்து வருகிறது. உயரமான இடத்திற்குச் செல்லத் தயாராகுங்கள்.",
+      "text_en": "FLOOD WARNING for Hanwella. Water rising. Prepare to move to higher ground.",
+      "target_gn_ids": [
+        "KLN-004"
+      ],
+      "approval_id": "APV-8dcaccc986",
+      "issued_at": "2026-10-17T05:37:41.100214Z",
+      "status": "published",
+      "expires_at": "2026-10-17T11:37:41.100214Z",
+      "superseded_by": null,
+      "stood_down_by": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "alert_id": "AL-KLN-2026-014-v1-3",
+      "template_id": "flood_warning",
+      "slots": {
+        "area": "Malabe"
+      },
+      "text_si": "Malabe සඳහා ගංවතුර අනතුරු ඇඟවීමයි. ජල මට්ටම ඉහළ යමින් පවතී. උස් බිමකට යාමට සූදානම් වන්න.",
+      "text_ta": "Malabe பகுதிக்கு வெள்ள எச்சரிக்கை. நீர்மட்டம் உயர்ந்து வருகிறது. உயரமான இடத்திற்குச் செல்லத் தயாராகுங்கள்.",
+      "text_en": "FLOOD WARNING for Malabe. Water rising. Prepare to move to higher ground.",
+      "target_gn_ids": [
+        "KLN-007"
+      ],
+      "approval_id": "APV-8dcaccc986",
+      "issued_at": "2026-10-17T05:37:41.100214Z",
+      "status": "published",
+      "expires_at": "2026-10-17T11:37:41.100214Z",
+      "superseded_by": null,
+      "stood_down_by": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "alert_id": "AL-KLN-2026-014-v1-4",
+      "template_id": "flood_warning",
+      "slots": {
+        "area": "Biyagama"
+      },
+      "text_si": "Biyagama සඳහා ගංවතුර අනතුරු ඇඟවීමයි. ජල මට්ටම ඉහළ යමින් පවතී. උස් බිමකට යාමට සූදානම් වන්න.",
+      "text_ta": "Biyagama பகுதிக்கு வெள்ள எச்சரிக்கை. நீர்மட்டம் உயர்ந்து வருகிறது. உயரமான இடத்திற்குச் செல்லத் தயாராகுங்கள்.",
+      "text_en": "FLOOD WARNING for Biyagama. Water rising. Prepare to move to higher ground.",
+      "target_gn_ids": [
+        "KLN-001"
+      ],
+      "approval_id": "APV-8dcaccc986",
+      "issued_at": "2026-10-17T05:37:41.100214Z",
+      "status": "published",
+      "expires_at": "2026-10-17T11:37:41.100214Z",
+      "superseded_by": null,
+      "stood_down_by": null
+    }
+  ],
+  "completed_cluster_ids": [],
+  "commitments": [
+    {
+      "schema_version": "1.0.0",
+      "commitment_id": "CMT-BOAT-01-CL-0001",
+      "plan_id": "PLN-0001",
+      "plan_version": 1,
+      "assignment": {
+        "schema_version": "1.0.0",
+        "vehicle_id": "BOAT-01",
+        "cluster_id": "CL-0001",
+        "route_edge_ids": [
+          "4-12-0",
+          "12-20-0",
+          "20-19-0",
+          "19-18-0",
+          "18-17-0"
+        ],
+        "eta_minutes": 4.876,
+        "distance_km": 2.768,
+        "load": 12,
+        "access_segments": []
+      },
+      "status": "released",
+      "released_at": "2026-10-17T05:37:41.100214Z",
+      "closed_at": null,
+      "note": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "commitment_id": "CMT-TRK-01-CL-0004",
+      "plan_id": "PLN-0001",
+      "plan_version": 1,
+      "assignment": {
+        "schema_version": "1.0.0",
+        "vehicle_id": "TRK-01",
+        "cluster_id": "CL-0004",
+        "route_edge_ids": [],
+        "eta_minutes": 0.0,
+        "distance_km": 0.0,
+        "load": 3,
+        "access_segments": []
+      },
+      "status": "released",
+      "released_at": "2026-10-17T05:37:41.100214Z",
+      "closed_at": null,
+      "note": null
+    }
+  ],
+  "vehicles": [
+    {
+      "schema_version": "1.0.0",
+      "vehicle_id": "BOAT-01",
+      "kind": "boat",
+      "capacity": 12,
+      "depot_gn_id": "KLN-006",
+      "depot_lat": 6.9,
+      "depot_lon": 79.92,
+      "available": true
+    },
+    {
+      "schema_version": "1.0.0",
+      "vehicle_id": "BOAT-02",
+      "kind": "boat",
+      "capacity": 8,
+      "depot_gn_id": "KLN-007",
+      "depot_lat": 6.915,
+      "depot_lon": 79.92,
+      "available": true
+    },
+    {
+      "schema_version": "1.0.0",
+      "vehicle_id": "AMB-01",
+      "kind": "ambulance",
+      "capacity": 4,
+      "depot_gn_id": "KLN-002",
+      "depot_lat": 6.905,
+      "depot_lon": 79.93,
+      "available": true
+    },
+    {
+      "schema_version": "1.0.0",
+      "vehicle_id": "TRK-01",
+      "kind": "truck",
+      "capacity": 12,
+      "depot_gn_id": "KLN-004",
+      "depot_lat": 6.92,
+      "depot_lon": 79.93,
+      "available": true
+    },
+    {
+      "schema_version": "1.0.0",
+      "vehicle_id": "TRK-02",
+      "kind": "truck",
+      "capacity": 10,
+      "depot_gn_id": "KLN-010",
+      "depot_lat": 6.925000000000001,
+      "depot_lon": 79.915,
+      "available": true
+    }
+  ],
+  "divisions": {
+    "KLN-001": {
+      "name": "Biyagama",
+      "lat": 6.9,
+      "lon": 79.905
+    },
+    "KLN-002": {
+      "name": "Kaduwela",
+      "lat": 6.905,
+      "lon": 79.93
+    },
+    "KLN-003": {
+      "name": "Kolonnawa",
+      "lat": 6.91,
+      "lon": 79.905
+    },
+    "KLN-004": {
+      "name": "Hanwella",
+      "lat": 6.92,
+      "lon": 79.93
+    },
+    "KLN-005": {
+      "name": "Avissawella",
+      "lat": 6.925000000000001,
+      "lon": 79.935
+    },
+    "KLN-006": {
+      "name": "Kelaniya",
+      "lat": 6.9,
+      "lon": 79.92
+    },
+    "KLN-007": {
+      "name": "Malabe",
+      "lat": 6.915,
+      "lon": 79.92
+    },
+    "KLN-008": {
+      "name": "Pahathgama",
+      "lat": 6.92,
+      "lon": 79.905
+    },
+    "KLN-009": {
+      "name": "Sedawatta",
+      "lat": 6.905,
+      "lon": 79.91000000000001
+    },
+    "KLN-010": {
+      "name": "Wellampitiya",
+      "lat": 6.925000000000001,
+      "lon": 79.915
+    }
+  },
+  "trace": [
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-7727b1a5872f",
+      "agent": "A0",
+      "action": "route:A2",
+      "tier": "A",
+      "occurred_at": "2026-10-17T05:37:40.098586Z",
+      "human_touch": false,
+      "detail": "no hazard surface yet"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-296e2c61f5d0",
+      "agent": "A2",
+      "action": "hazard_recomputed",
+      "tier": "A",
+      "occurred_at": "2026-10-17T05:37:40.098651Z",
+      "human_touch": false,
+      "detail": "method=buffer_proxy conf=0.40 rain24=137mm rain72=193mm driver=137mm nbro_level=2 impassable=8 no_go_gn=0 pruned=True | no DEM; susceptibility not assessed"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-40e3226cf7ae",
+      "agent": "A0",
+      "action": "route:__end__",
+      "tier": "A",
+      "occurred_at": "2026-10-17T05:37:40.231048Z",
+      "human_touch": false,
+      "detail": "converged; nothing due until new information arrives"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-c10fa388fcb8",
+      "agent": "A0",
+      "action": "route:A1",
+      "tier": "A",
+      "occurred_at": "2026-10-17T05:37:40.232850Z",
+      "human_touch": false,
+      "detail": "11 unprocessed signal(s)"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-1d769f66eda5",
+      "agent": "A1",
+      "action": "signals_ingested",
+      "tier": "A",
+      "occurred_at": "2026-10-17T05:37:40.232892Z",
+      "human_touch": false,
+      "detail": "ingested 11 signal(s) -> 4 cluster(s) [2 corroborated, 1 single-source, 1 unresolved, 0 contradicted]; 1 unlocated held | source trust updated for 5 source(s), lowest now 0.67"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-ccc455c8f4ba",
+      "agent": "A0",
+      "action": "route:A3",
+      "tier": "A",
+      "occurred_at": "2026-10-17T05:37:40.234554Z",
+      "human_touch": false,
+      "detail": "clusters or hazard changed since last ranking"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-d3310029d7e5",
+      "agent": "A3",
+      "action": "queue_reranked",
+      "tier": "A",
+      "occurred_at": "2026-10-17T05:37:40.234598Z",
+      "human_touch": false,
+      "detail": "ranked 4 clusters; top: CL-0001=0.50, CL-0004=0.45, CL-0003=0.24"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-5b26d42315f2",
+      "agent": "A0",
+      "action": "route:A4",
+      "tier": "A",
+      "occurred_at": "2026-10-17T05:37:40.234921Z",
+      "human_touch": false,
+      "detail": "queue changed since last plan"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-718288bd576b",
+      "agent": "A4",
+      "action": "plan_solved",
+      "tier": "A",
+      "occurred_at": "2026-10-17T05:37:40.234961Z",
+      "human_touch": false,
+      "detail": "PLN-0001: 2 assigned / 2 dispatchable / 4 queued, optimal gap=0.000 obj=2.4 in 0.86s | held: CL-0003 (unresolved evidence), CL-0002 (confidence 0.40 < 0.50)"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-9b3d7dca6ef6",
+      "agent": "A0",
+      "action": "route:A5",
+      "tier": "A",
+      "occurred_at": "2026-10-17T05:37:41.096953Z",
+      "human_touch": false,
+      "detail": "plan PLN-0001 v1 unverified"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-bb9a670b0008",
+      "agent": "A5",
+      "action": "plan_verified",
+      "tier": "A",
+      "occurred_at": "2026-10-17T05:37:41.097028Z",
+      "human_touch": false,
+      "detail": "plan PLN-0001 v1: 5/5 checks passed"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-58cc1628aed3",
+      "agent": "A0",
+      "action": "route:gate",
+      "tier": "C",
+      "occurred_at": "2026-10-17T05:37:41.097260Z",
+      "human_touch": false,
+      "detail": "plan PLN-0001 v1 verified; requesting authorisation"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-8fd5eaf1467e",
+      "agent": "gate",
+      "action": "approval_requested",
+      "tier": "C",
+      "occurred_at": "2026-10-17T05:37:41.097311Z",
+      "human_touch": false,
+      "detail": "plan PLN-0001 v1: 2 dispatch(es), solver optimal gap=0.0; guardrails passed: targets_exist, gazetteer_membership, no_go_intersection, vehicle_capacity, tier_c_confidence_floor"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "APR-APV-8dcaccc986",
+      "agent": "gate",
+      "action": "approval_received",
+      "tier": "C",
+      "occurred_at": "2026-10-17T05:37:41.100135Z",
+      "human_touch": true,
+      "detail": "approved plan PLN-0001 v1 by cmdr-01"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-a1402c3b1afc",
+      "agent": "A0",
+      "action": "route:A6",
+      "tier": "C",
+      "occurred_at": "2026-10-17T05:37:41.100135Z",
+      "human_touch": false,
+      "detail": "plan PLN-0001 v1 approved; releasing"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "REL-PLN-0001-v1",
+      "agent": "A6",
+      "action": "dispatch_released",
+      "tier": "C",
+      "occurred_at": "2026-10-17T05:37:41.100214Z",
+      "human_touch": false,
+      "detail": "plan PLN-0001 v1: 2 dispatch order(s) released under approval APV-8dcaccc986 (cmdr-01)"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-A6-1912795550ae",
+      "agent": "A6",
+      "action": "sitrep_published",
+      "tier": "B",
+      "occurred_at": "2026-10-17T05:37:41.100214Z",
+      "human_touch": false,
+      "detail": "SITREP SR-KLN-2026-014-v1: 8 sourced claim(s), 4 alert(s) composed"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-e3d461ef6e6d",
+      "agent": "A0",
+      "action": "route:__end__",
+      "tier": "A",
+      "occurred_at": "2026-10-17T05:37:41.189704Z",
+      "human_touch": false,
+      "detail": "converged; nothing due until new information arrives"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-7ceec0f405b6",
+      "agent": "A0",
+      "action": "route:A1",
+      "tier": "A",
+      "occurred_at": "2026-10-17T05:37:41.191990Z",
+      "human_touch": false,
+      "detail": "2 unprocessed signal(s)"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-bf10979ad10f",
+      "agent": "A1",
+      "action": "signals_ingested",
+      "tier": "A",
+      "occurred_at": "2026-10-17T05:37:41.192033Z",
+      "human_touch": false,
+      "detail": "ingested 2 signal(s) -> 5 cluster(s) [3 corroborated, 1 single-source, 1 unresolved, 0 contradicted]; 1 unlocated held | source trust updated for 7 source(s), lowest now 0.67"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-9025a18e51e0",
+      "agent": "A0",
+      "action": "route:A3",
+      "tier": "A",
+      "occurred_at": "2026-10-17T05:37:41.193210Z",
+      "human_touch": false,
+      "detail": "clusters or hazard changed since last ranking"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-79dda84b0228",
+      "agent": "A3",
+      "action": "queue_reranked",
+      "tier": "A",
+      "occurred_at": "2026-10-17T05:37:41.193256Z",
+      "human_touch": false,
+      "detail": "ranked 5 clusters; top: CL-0001=0.51, CL-0004=0.47, CL-0005=0.46"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-691002defc7b",
+      "agent": "A0",
+      "action": "route:A4",
+      "tier": "A",
+      "occurred_at": "2026-10-17T05:37:41.193606Z",
+      "human_touch": false,
+      "detail": "queue changed since last plan"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-f91e541ec4d2",
+      "agent": "A4",
+      "action": "plan_solved",
+      "tier": "A",
+      "occurred_at": "2026-10-17T05:37:41.193649Z",
+      "human_touch": false,
+      "detail": "PLN-0002: 3 assigned / 1 dispatchable / 5 queued, optimal gap=0.000 obj=1.8 in 0.01s | committed: BOAT-01->CL-0001, TRK-01->CL-0004 | held: CL-0001 (crew already committed), CL-0004 (crew already committed), CL-0003 (unresolved evidence), CL-0002 (confidence 0.40 < 0.50)"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-60a5d64d3c38",
+      "agent": "A0",
+      "action": "route:A5",
+      "tier": "A",
+      "occurred_at": "2026-10-17T05:37:41.198899Z",
+      "human_touch": false,
+      "detail": "plan PLN-0002 v2 unverified"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-26bee5606546",
+      "agent": "A5",
+      "action": "plan_verified",
+      "tier": "A",
+      "occurred_at": "2026-10-17T05:37:41.198954Z",
+      "human_touch": false,
+      "detail": "plan PLN-0002 v2: 5/5 checks passed"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-84b0453318c1",
+      "agent": "A0",
+      "action": "route:gate",
+      "tier": "C",
+      "occurred_at": "2026-10-17T05:37:41.199084Z",
+      "human_touch": false,
+      "detail": "plan PLN-0002 v2 verified; requesting authorisation"
+    },
+    {
+      "schema_version": "1.0.0",
+      "event_id": "EV-00c6ca95b7ac",
+      "agent": "gate",
+      "action": "approval_requested",
+      "tier": "C",
+      "occurred_at": "2026-10-17T05:37:41.199131Z",
+      "human_touch": false,
+      "detail": "plan PLN-0002 v2: 3 dispatch(es), solver optimal gap=0.0; guardrails passed: targets_exist, gazetteer_membership, no_go_intersection, vehicle_capacity, tier_c_confidence_floor"
+    }
+  ],
+  "commands": [
+    {
+      "command_id": "CMD-08f5d97bde",
+      "kind": "report",
+      "status": "done",
+      "detail": "",
+      "submitted_at": "2026-10-17T05:37:41.191916Z",
+      "finished_at": "2026-10-17T05:37:41.199209Z"
+    },
+    {
+      "command_id": "CMD-7f4053fa1e",
+      "kind": "report",
+      "status": "done",
+      "detail": "",
+      "submitted_at": "2026-10-17T05:37:41.191888Z",
+      "finished_at": "2026-10-17T05:37:41.199197Z"
+    },
+    {
+      "command_id": "CMD-2bdb541227",
+      "kind": "decision",
+      "status": "done",
+      "detail": "",
+      "submitted_at": "2026-10-17T05:37:41.099984Z",
+      "finished_at": "2026-10-17T05:37:41.189810Z"
+    },
+    {
+      "command_id": "CMD-ea17d0177d",
+      "kind": "report",
+      "status": "done",
+      "detail": "",
+      "submitted_at": "2026-10-17T05:37:40.232765Z",
+      "finished_at": "2026-10-17T05:37:41.097444Z"
+    },
+    {
+      "command_id": "CMD-1ae5c22c3e",
+      "kind": "report",
+      "status": "done",
+      "detail": "",
+      "submitted_at": "2026-10-17T05:37:40.232754Z",
+      "finished_at": "2026-10-17T05:37:41.097438Z"
+    },
+    {
+      "command_id": "CMD-c098fb2925",
+      "kind": "report",
+      "status": "done",
+      "detail": "",
+      "submitted_at": "2026-10-17T05:37:40.232743Z",
+      "finished_at": "2026-10-17T05:37:41.097433Z"
+    },
+    {
+      "command_id": "CMD-3e6d4282b3",
+      "kind": "report",
+      "status": "done",
+      "detail": "",
+      "submitted_at": "2026-10-17T05:37:40.232732Z",
+      "finished_at": "2026-10-17T05:37:41.097428Z"
+    },
+    {
+      "command_id": "CMD-bfd38236b0",
+      "kind": "report",
+      "status": "done",
+      "detail": "",
+      "submitted_at": "2026-10-17T05:37:40.232721Z",
+      "finished_at": "2026-10-17T05:37:41.097423Z"
+    },
+    {
+      "command_id": "CMD-2f62bbcbd9",
+      "kind": "report",
+      "status": "done",
+      "detail": "",
+      "submitted_at": "2026-10-17T05:37:40.232710Z",
+      "finished_at": "2026-10-17T05:37:41.097418Z"
+    },
+    {
+      "command_id": "CMD-f52f89f813",
+      "kind": "report",
+      "status": "done",
+      "detail": "",
+      "submitted_at": "2026-10-17T05:37:40.232699Z",
+      "finished_at": "2026-10-17T05:37:41.097412Z"
+    },
+    {
+      "command_id": "CMD-1fa64dcf8e",
+      "kind": "report",
+      "status": "done",
+      "detail": "",
+      "submitted_at": "2026-10-17T05:37:40.232687Z",
+      "finished_at": "2026-10-17T05:37:41.097407Z"
+    },
+    {
+      "command_id": "CMD-faa71b1a3b",
+      "kind": "report",
+      "status": "done",
+      "detail": "",
+      "submitted_at": "2026-10-17T05:37:40.232675Z",
+      "finished_at": "2026-10-17T05:37:41.097401Z"
+    },
+    {
+      "command_id": "CMD-80bab4e865",
+      "kind": "report",
+      "status": "done",
+      "detail": "",
+      "submitted_at": "2026-10-17T05:37:40.232658Z",
+      "finished_at": "2026-10-17T05:37:41.097395Z"
+    },
+    {
+      "command_id": "CMD-4770807e33",
+      "kind": "report",
+      "status": "done",
+      "detail": "",
+      "submitted_at": "2026-10-17T05:37:40.232628Z",
+      "finished_at": "2026-10-17T05:37:41.097381Z"
+    },
+    {
+      "command_id": "CMD-6df12bc577",
+      "kind": "open",
+      "status": "done",
+      "detail": "",
+      "submitted_at": "2026-10-17T05:37:40.098413Z",
+      "finished_at": "2026-10-17T05:37:40.231152Z"
+    }
+  ],
+  "llm": {
+    "chain": [
+      "stub"
+    ],
+    "skipped": [],
+    "providers": [],
+    "offline_fallback": true
+  }
+}
