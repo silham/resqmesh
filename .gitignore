@@ -1,4 +1,32 @@
+# Secrets
+.env
+.env.*
+!.env.example
+*.key
+*credentials*.json
+
+# Toolchain and editors
 .jac/
 node_modules/
+dist/
+__pycache__/
+*.py[cod]
 .vscode/
 .idea/
+.DS_Store
+
+# Project data: large and regenerable (scripts/fetch_data.jac rebuilds it)
+data/raw/
+data/cache/
+*.pkl
+*.tif
+*.tiff
+*.zip
+
+# Runtime state
+*.sqlite
+*.sqlite3
+*.db
+sitreps/
+logs/
+*.log
