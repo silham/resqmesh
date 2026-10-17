@@ -431,6 +431,19 @@ adversarial suite — deliberately malformed plans that must all be rejected —
 
 ---
 
+### Starting over, and a macOS quirk
+
+The incident, the roster and the learned source trust live in the project's graph store, so a
+restart resumes exactly where the last run stopped. To begin from nothing, drop the project's
+database (`jac db list` shows its name, `jac db drop <name> -y` removes it) and start again.
+
+On macOS, Finder rewrites `.DS_Store` in the project folder while the console bundle is being
+prepared, and `jac run` then stops with *Sources changed during preparation*. Run it again, close
+the folder in Finder, or keep an empty read-only `.DS_Store` in the project root
+(`: > .DS_Store && chflags uchg .DS_Store`).
+
+---
+
 ## Known limitations and assumptions
 
 Stated plainly, because several of these are visible in a demo.

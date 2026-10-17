@@ -19,6 +19,7 @@ import from dotenv { load_dotenv }
 import from pathlib { Path }
 import from resqmesh.adapters.broadcast.telegram { TelegramChannelBroadcaster }
 import from resqmesh.adapters.fakes { StubLLM }
+import from resqmesh.adapters.geo.paths { data_dir, dem_path }
 import from resqmesh.adapters.geo.roads { load_graph }
 import from resqmesh.adapters.llm.config { router_from_env }
 import from resqmesh.adapters.llm.router { ProviderRouter }
@@ -201,6 +202,7 @@ def boot() -> Runtime {
         load_dotenv();   # a .env beside the project supplies keys and settings; real environment wins
         logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s");
         quiet_http_logging();   # before any request: Telegram URLs carry the bot token
+        log.info("data directory %s (terrain %s, cwd %s)", data_dir(), "present" if dem_path().exists() else "missing", os.getcwd());
         settings = settings_from_env();
         if not settings.salt {
             # Resolve once and share, so the web form, webhook and poller pseudonymise the
