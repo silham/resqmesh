@@ -188,3 +188,36 @@ body {
   .crisis-console { flex: 1 0 auto; }
   .crisis-workspace { min-height: 350px; }
 }
+
+/* Public pages: the same calm canvas as the console, with the emergency numbers pinned
+   under the header so no page is ever the reason somebody delayed calling. */
+.public-app .mantine-AppShell-main { background: #eef3f6; min-height: 100dvh; }
+.public-nav { display: flex; gap: 4px; }
+.public-nav a { min-height: 40px; padding: 0 12px; display: inline-flex; align-items: center; border-radius: 6px; color: #e1eef2; font-size: 13px; font-weight: 650; text-decoration: none; }
+.public-nav a:hover { background: #244352; }
+.public-emergency { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 16px; padding: 8px 16px; background: #fdecea; border-bottom: 1px solid #f0c6c1; color: #8d2c24; font-size: 13px; font-weight: 650; }
+.public-emergency-calls { display: inline-flex; flex-wrap: wrap; gap: 4px 8px; }
+.public-emergency-calls a { display: inline-flex; align-items: center; gap: 4px; min-height: 36px; padding: 0 14px; border-radius: 18px; background: #b7372c; color: #fff; font-size: 13px; text-decoration: none; }
+.public-emergency-calls a strong { font-size: 15px; }
+.public-column { max-width: 640px; margin: 0 auto; padding: 20px 16px 28px; }
+.public-heading { margin-bottom: 16px; }
+.public-heading h1 { margin: 0; font-size: 26px; line-height: 1.2; letter-spacing: -.6px; color: var(--crisis-ink); }
+.public-heading p { margin: 6px 0 0; font-size: 14px; color: var(--crisis-muted); }
+.public-footer { display: flex; justify-content: center; gap: 24px; margin-top: 28px; padding-top: 14px; border-top: 1px solid var(--crisis-line); }
+.public-footer a { color: var(--crisis-muted); font-size: 13px; text-decoration: none; }
+.public-footer a:hover { color: #175c74; text-decoration: underline; }
+.public-app .mantine-Card-root, .public-app .mantine-Paper-root { border-color: var(--crisis-line); border-radius: 9px; background: #fff; }
+.public-app .mantine-Button-root { min-height: 48px; font-size: 15px; }
+.public-app .mantine-Input-input, .public-app .mantine-Textarea-input, .public-app .mantine-Select-input { min-height: 48px; font-size: 16px; }
+.public-app .mantine-Textarea-input { min-height: 112px; }
+.public-app .mantine-InputWrapper-label { font-size: 14px; font-weight: 650; color: var(--crisis-ink); margin-bottom: 4px; }
+.public-app .mantine-SegmentedControl-label { min-height: 44px; display: flex; align-items: center; justify-content: center; font-size: 15px; }
+.public-app a:focus-visible, .public-app button:focus-visible, .public-app input:focus-visible, .public-app textarea:focus-visible { outline: 3px solid #216aa2; outline-offset: 3px; }
+.public-step { padding: 14px; border: 1px solid var(--crisis-line); border-radius: 8px; background: #f8fafc; }
+.public-step-title { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 13px; font-weight: 700; letter-spacing: .3px; color: #34495c; }
+.public-step-title span { width: 22px; height: 22px; border-radius: 50%; background: #102c3b; color: #fff; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; }
+@media (max-width: 600px) {
+  .public-column { padding: 14px 12px 24px; }
+  .public-heading h1 { font-size: 23px; }
+  .public-emergency { justify-content: flex-start; padding: 6px 12px; }
+}

@@ -5,7 +5,7 @@ It is deliberately small. A member of the public reaches these pages from a phon
 on a poor connection, so the commander console's map and polling do not belong here.
 """
 
-import from "@mantine/core" { Anchor, AppShell, Group, Text }
+import from "@mantine/core" { Anchor, AppShell, Group, Title }
 import from "@jac/runtime" { Link }
 
 """The two numbers that outrank this whole system. Tappable, because this is a phone."""
@@ -28,34 +28,45 @@ def:pub publicMessage(code: str, fallback: str) -> str {
     return fallback;
 }
 
-def:pub PublicShell(title: str, children: any = None) -> JsxElement {
-    <AppShell header={{"height": 56}} padding="md">
+def:pub PublicShell(title: str, subtitle: str = "", children: any = None) -> JsxElement {
+    <AppShell header={{"height": 60}} padding={0} className="crisis-app public-app">
         <AppShell.Header>
-            <Group h="100%" px="md" justify="space-between" wrap="nowrap" gap="sm">
-                <Anchor component={Link} to="/" fw={700} c="teal" underline="never" style={{"flexShrink": 0}}>
-                    ResQ-Mesh
+            <Group h="100%" px="md" justify="space-between" wrap="nowrap" gap="sm" className="crisis-header">
+                <Anchor component={Link} to="/" underline="never" className="crisis-brand" aria-label="ResQ-Mesh home">
+                    <Title order={4}>ResQ-Mesh</Title>
+                    <span>EMERGENCY RESPONSE</span>
                 </Anchor>
-                <Text size="sm" c="dimmed" truncate={True}>
-                    {title}
-                </Text>
+                <nav className="public-nav" aria-label="Public pages">
+                    <Link to="/report">Report</Link>
+                    <Link to="/news">Bulletins</Link>
+                </nav>
             </Group>
         </AppShell.Header>
-        <AppShell.Main>
-            <div style={{"maxWidth": 560, "margin": "0 auto"}}>
-                {children}
-                {#* On every public page, not only the landing page: somebody who opened the
-                    report form and realised it is worse than they thought should not have
-                    to navigate back to find the number. *#}
-                <Group justify="center" gap="xs" mt="xl" mb="md" wrap="wrap">
-                    <Text size="xs" c="dimmed">
-                        Life-threatening emergency?
-                    </Text>
+        <AppShell.Main className="public-main">
+            {#* On every public page, not only the landing page: somebody who opened the
+                report form and realised it is worse than they thought should not have to
+                navigate back to find the number. Above the page itself, because no page
+                here may be the reason somebody delayed calling. *#}
+            <div className="public-emergency" role="note">
+                <span>Life-threatening emergency? Call first.</span>
+                <span className="public-emergency-calls">
                     {for e in EMERGENCY_NUMBERS {
-                        <Anchor key={e["number"]} href={"tel:" + e["number"]} size="xs" fw={700} c="red.7">
-                            Call {e["number"]}
-                        </Anchor>
+                        <a key={e["number"]} href={"tel:" + e["number"]} aria-label={"Call " + e["who"] + " on " + e["number"]}>
+                            <strong>{e["number"]}</strong>{" " + e["who"]}
+                        </a>
                     }}
-                </Group>
+                </span>
+            </div>
+            <div className="public-column">
+                <div className="public-heading">
+                    <h1>{title}</h1>
+                    {subtitle and <p>{subtitle}</p>}
+                </div>
+                {children}
+                <footer className="public-footer">
+                    <Link to="/responder">Responder dispatch</Link>
+                    <Link to="/console">Commander console</Link>
+                </footer>
             </div>
         </AppShell.Main>
     </AppShell>

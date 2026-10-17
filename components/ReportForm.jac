@@ -6,7 +6,7 @@ de-duplicated exactly like a Telegram or radio report. No sign-in: in a flood yo
 ask a caller to create an account.
 """
 
-import from "@mantine/core" { Alert, Button, Card, Select, Stack, Text, Textarea, TextInput }
+import from "@mantine/core" { Alert, Button, Card, SegmentedControl, Stack, Text, Textarea, TextInput }
 import from "@jac/runtime" { Link }
 import from resqmesh.service.endpoints { submit_report }
 import from .LocationPicker { LocationPicker }
@@ -107,7 +107,7 @@ def:pub ReportForm() -> JsxElement {
         busy = False;
     }
 
-    <PublicShell title="Report an emergency">
+    <PublicShell title="Report an emergency" subtitle="Takes under a minute. No account needed.">
         {reference and (
             <Card withBorder={True} radius="md" padding="lg">
                 <Stack gap="md">
@@ -139,25 +139,38 @@ def:pub ReportForm() -> JsxElement {
         {not reference and (
             <Card withBorder={True} radius="md" padding="lg">
                 <Stack gap="md">
-                    <Text size="sm" c="dimmed">
-                        Tell the response team what you are seeing. If you can, name the place. You do not need an account.
-                    </Text>
-                    <Select label="Language" value={lang} onChange={pickLang} data={LANGUAGE_CHOICES} allowDeselect={False} />
-                    <Textarea
-                        label={prompt["label"]}
-                        placeholder={prompt["placeholder"]}
-                        value={body}
-                        onChange={editBody}
-                        minRows={4}
-                        autosize={True}
+                    <SegmentedControl
+                        value={lang}
+                        onChange={pickLang}
+                        data={LANGUAGE_CHOICES}
+                        fullWidth={True}
+                        size="md"
+                        aria-label="Language"
                     />
-                    <LocationPicker value={fix} onChange={moveFix} />
-                    <TextInput
-                        label="Your name or phone (optional)"
-                        description="Stored only as a pseudonym; never shown to the public."
-                        value={source}
-                        onChange={editSource}
-                    />
+                    <section className="public-step">
+                        <div className="public-step-title"><span>1</span>Describe the emergency</div>
+                        <Textarea
+                            label={prompt["label"]}
+                            placeholder={prompt["placeholder"]}
+                            value={body}
+                            onChange={editBody}
+                            minRows={4}
+                            autosize={True}
+                        />
+                    </section>
+                    <section className="public-step">
+                        <div className="public-step-title"><span>2</span>Location</div>
+                        <LocationPicker value={fix} onChange={moveFix} />
+                    </section>
+                    <section className="public-step">
+                        <div className="public-step-title"><span>3</span>Contact (optional)</div>
+                        <TextInput
+                            label="Your name or phone"
+                            description="Stored only as a pseudonym; never shown to the public. A second, separate reporter confirms an emergency faster."
+                            value={source}
+                            onChange={editSource}
+                        />
+                    </section>
                     {error and (
                         <Alert color="red" variant="light">
                             {error}
