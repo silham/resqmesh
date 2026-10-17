@@ -15,8 +15,10 @@ So:
 """
 
 import logging;
+import json;
 import queue;
 import threading;
+import time;
 import uuid;
 import from datetime { datetime, UTC }
 import from resqmesh.contracts.enums { ApprovalDecision, commitment_is_open }
@@ -28,6 +30,9 @@ glob log: any = logging.getLogger(__name__);
 
 """How many commands the console's command log keeps."""
 glob COMMAND_LOG: int = 25;
+
+"""How long an identical command is collapsed into the one already queued."""
+glob DEDUPE_WINDOW_S: float = 8.0;
 
 glob COMMAND_KINDS: list[str] = [
     "open", "report", "decision", "halt", "resume", "tick", "responder", "place", "stand_down"
@@ -93,6 +98,9 @@ obj IncidentService {
         busy: bool = False,
         graphs: dict[str, any] = {},
         broadcast_ids: set[str] = set(),
+        # Identical commands re-submitted within seconds collapse into one: the runtime
+        # may re-run an endpoint after a write conflict, and a double-click is the same.
+        recent: dict[str, tuple[str, float]] = {},
         # Guards the published snapshot and command log: requests record commands
         # while the writer publishes.
         lock: any = None;
@@ -113,8 +121,7 @@ obj IncidentService {
     """Point the runner at the persisted incident node for this context."""
     def attach -> None {
         if self.incident_provider is not None {
-            self.runner.incident = self.incident_provider();
-            self.runner.wire();
+            self.runner.adopt(self.incident_provider());
         }
     }
 
@@ -225,7 +232,25 @@ obj IncidentService {
         }
     }
 
+    def dedupe_key(cmd: Command) -> str {
+        p = cmd.payload;
+        if isinstance(p, RawSignal) {
+            return f"report|{p.body}|{p.source_id}|{p.lat}|{p.lon}";
+        }
+        return f"{cmd.kind}|{json.dumps(to_json(p), sort_keys=True, `default=str)}";
+    }
+
     def submit(cmd: Command) -> str {
+        now = time.monotonic();
+        key = self.dedupe_key(cmd);
+        with self.lock {
+            self.recent = {k: v for (k, v) in self.recent.items() if now - v[1] < DEDUPE_WINDOW_S};
+            seen = self.recent.get(key);
+            if seen is not None {
+                return seen[0];
+            }
+            self.recent[key] = (cmd.command_id, now);
+        }
         self.record(cmd, "queued");
         self.pending.put(cmd);
         return cmd.command_id;
@@ -279,6 +304,17 @@ obj IncidentService {
             self.busy = False;
             self.publish();
             self.broadcast_new();
+            self.save_learning();
+        }
+    }
+
+    """Carry what this incident learned into the store, for the next one. Safe mid-incident:
+    the baseline an incident is measured against is held on the incident, not re-read."""
+    def save_learning -> None {
+        try {
+            self.runner.persist_learning();
+        } except Exception {
+            log.exception("could not persist learned priors");
         }
     }
 

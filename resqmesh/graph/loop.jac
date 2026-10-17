@@ -41,6 +41,7 @@ import from resqmesh.graph.predicates {
     approval_for_current_plan, release_due, released_event_id, trace_of, unrecorded_approvals
 }
 import from resqmesh.graph.supervisor { A1, A2, A3, A4, A5, A6, END, GATE, SupervisorConfig, decide }
+import from resqmesh.contracts.models { AdaptationSnapshot }
 import from resqmesh.memory.adaptation { AdaptationStore, MemoryAdaptationStore }
 
 glob ROUTE_PREFIX: str = "route:";
@@ -50,7 +51,12 @@ glob STATIONS: list[str] = ["A1", "A2", "A3", "A4", "A5", "gate", "A6"];
 """One incident's state, persisted in the graph."""
 node Incident {
     has incident_id: str,
-        state: IncidentState = IncidentState();
+        state: IncidentState = IncidentState(),
+        # What the incident started with, held apart from the running posterior. A1
+        # recomputes learning from the whole evidence set each run, so it must read this
+        # every time: feeding it back its own posterior would double-count. Kept on the
+        # node so a restart resumes with the same baseline.
+        baseline: AdaptationSnapshot | None = None;
 
     # App-owned structure: every authenticated request and the scheduler work on the
     # one incident; who may do what is decided by role, not by graph ownership.
@@ -145,11 +151,19 @@ obj IncidentRunner {
         checkpoints: list[IncidentState] = [];
 
     def postinit {
-        self.baseline = self.store.load();
         if self.incident is None {
             self.incident = Incident(incident_id=self.incident_id, state=new_state(self.incident_id, ""));
         }
+        self.adopt(self.incident);
+    }
+
+    """Work on this persisted incident node: lay out its stations and resume its baseline
+    (or, for a new incident, what previous incidents learned)."""
+    def adopt(inc: Incident) -> None {
+        self.incident = inc;
         self.wire();
+        held = inc.baseline;
+        self.baseline = held if held is not None else self.store.load();
     }
 
     """Lay out the stations once: incident -> hub, hub <-> each specialist."""
@@ -349,6 +363,7 @@ obj IncidentRunner {
         inc = self.incident;
         if inc is not None {
             inc.state = new_state(self.incident_id, goal, vehicles, shelters);
+            inc.baseline = self.baseline;
         }
         return self.invoke({"adaptation": self.baseline});
     }
