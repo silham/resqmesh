@@ -272,6 +272,18 @@ Create a **Public Repository** resource, pick the **Dockerfile** build pack, bra
 
 Open `/console` after the first deploy and enter the setup code to create the first commander.
 
+**The real Kelani basin.** The image starts on the synthetic world. For the real one, set
+`RESQMESH_WORLD=real` (and optionally `RESQMESH_AT`), mount `/app/data` as a persistent volume, and
+fetch the data once from the container's terminal in Coolify:
+
+```bash
+cd /app && jac run --no-takeover scripts/fetch_data.jac --only srtm roads waterways gn
+```
+
+That is about 250 MB of downloads, and building the road network is memory-hungry, so give the host
+spare memory while it runs. Restart the application afterwards; the first start with the real world
+also derives the flood-depth raster once, slowly, and caches it in `/app/data/cache`.
+
 ---
 
 ## Who uses which page

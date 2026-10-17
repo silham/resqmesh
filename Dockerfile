@@ -26,7 +26,9 @@ RUN chown -R 1000:1000 /app
 # The graph store (the incident, the roster, learned source trust) lives under
 # JAC_CACHE_HOME; mount it, with outputs and fetched data, to survive restarts. The
 # embedded database refuses to run as root, hence the unprivileged user.
-ENV JAC_CACHE_HOME=/var/lib/resqmesh/jac
+ENV JAC_CACHE_HOME=/var/lib/resqmesh/jac \
+    RESQMESH_DATA_DIR=/app/data \
+    RESQMESH_OUTPUTS_DIR=/app/outputs
 RUN mkdir -p /var/lib/resqmesh/jac /app/outputs /app/data && chown -R 1000:1000 /var/lib/resqmesh /app/outputs /app/data
 USER 1000
 VOLUME ["/var/lib/resqmesh/jac", "/app/outputs", "/app/data"]
