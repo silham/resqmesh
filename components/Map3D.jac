@@ -424,7 +424,7 @@ def:pub Map3D(view: any, onFlat: Callable[[], None], onUnavailable: Callable[[st
             label: str = ("Served" if done else band["label"]) + " · " + divisionName(view, c["gn_id"]) + " · " + prettyHazard(c["hazard_type"]);
             el: any = putMarker(map, store, keep, "cluster-" + c["cluster_id"], "cluster", c["cluster_id"], c["centroid_lon"], c["centroid_lat"], label, focus);
             size: str = str(16 if done else SIZES[band["color"]]) + "px";
-            el.className = "map-incident-marker";
+            el.classList.add("map-incident-marker");
             el.style.width = size;
             el.style.height = size;
             el.style.background = "#ced4da" if done else COLORS[band["color"]];
@@ -442,7 +442,7 @@ def:pub Map3D(view: any, onFlat: Callable[[], None], onUnavailable: Callable[[st
             dispatched: bool = bool(committed[v["vehicle_id"]]);
             label: str = v["vehicle_id"] + " · " + v["kind"] + " · " + ("dispatched" if dispatched else "available") + " · depot position";
             el: any = putMarker(map, store, keep, "vehicle-" + v["vehicle_id"], "vehicle", v["vehicle_id"], v["depot_lon"], v["depot_lat"], label, focus);
-            el.className = "map-vehicle-marker";
+            el.classList.add("map-vehicle-marker");
             # Only the constant badge markup, never API-provided HTML.
             icon: str = vehicleBadgeSvg(v["kind"], dispatched, 26);
             if el.innerHTML != icon {
