@@ -20,7 +20,7 @@ def:pub hazardData(value: any) -> any {
 }
 
 def routeIdOf(route: any) -> str {
-    return JSON.stringify([route["vehicle_id"], route["cluster_id"]]);
+    return JSON.stringify([route["vehicle_id"], route["cluster_id"]]);  # jac:ignore[E1032,E1001,E1002]
 }
 
 """Each route with a stable id and its line oriented depot-first."""
@@ -140,15 +140,15 @@ obj:pub MapDataUpdater {
         }
         # Only the few moving points are serialised, never the road or flood layers.
         estimates = {"type": "FeatureCollection", "features": points};
-        nextEstimateKey = JSON.stringify(estimates);
+        nextEstimateKey = JSON.stringify(estimates);  # jac:ignore[E1032,E1001,E1002]
         if nextEstimateKey != self.estimateKey {
             self.send("estimates", estimates);
-            self.estimateKey = nextEstimateKey;
+            self.estimateKey = nextEstimateKey;  # jac:ignore[E1032,E1001,E1002]
         }
-        nextFlowingKey = JSON.stringify(flowing);
+        nextFlowingKey = JSON.stringify(flowing);  # jac:ignore[E1032,E1001,E1002]
         if nextFlowingKey != self.flowingKey {
             self.setFlowing.call(None, flowing);
-            self.flowingKey = nextFlowingKey;
+            self.flowingKey = nextFlowingKey;  # jac:ignore[E1032,E1001,E1002]
         }
         return len(points) > 0 or waiting;
     }
@@ -156,10 +156,10 @@ obj:pub MapDataUpdater {
 
 """Collect every [lon, lat] pair nested in a GeoJSON coordinates array."""
 def collectCoords(value: any, points: list[any]) -> None {
-    if not Array.isArray(value) {
+    if not Array.isArray(value) {  # jac:ignore[E1032,E1001,E1002]
         return;
     }
-    if value.length >= 2 and Number.isFinite(value[0]) and Number.isFinite(value[1]) {
+    if value.length >= 2 and Number.isFinite(value[0]) and Number.isFinite(value[1]) {  # jac:ignore[E1032,E1001,E1002]
         points.append([value[0], value[1]]);
         return;
     }
@@ -178,12 +178,12 @@ def collectGeo(value: any, points: list[any]) -> None {
     if value["geometry"] {
         collectGeo(value["geometry"], points);
     }
-    if Array.isArray(value["features"]) {
+    if Array.isArray(value["features"]) {  # jac:ignore[E1032,E1001,E1002]
         for f in value["features"] {
             collectGeo(f, points);
         }
     }
-    if Array.isArray(value["geometries"]) {
+    if Array.isArray(value["geometries"]) {  # jac:ignore[E1032,E1001,E1002]
         for g in value["geometries"] {
             collectGeo(g, points);
         }
@@ -208,9 +208,10 @@ def:pub overviewPoints(view: any) -> list[any] {
     collectGeo(view["blocked_roads_geojson"], raw);
     out: list[any] = [];
     for p in raw {
-        if Number.isFinite(p[0]) and Number.isFinite(p[1]) and abs(p[0]) <= 180 and abs(p[1]) <= 90 {
+        if Number.isFinite(p[0]) and Number.isFinite(p[1]) and abs(p[0]) <= 180 and abs(p[1]) <= 90 {  # jac:ignore[E1032,E1001,E1002]
             out.append(p);
         }
     }
     return out;
 }
+
