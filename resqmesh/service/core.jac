@@ -38,7 +38,7 @@ found, 409 conflict, 403 forbidden, 422 invalid, 401 unauthenticated) and the me
 starts with its short code, so a client can tell them apart."""
 class ServiceError(Exception) {
     def init(self: ServiceError, status: int, message: str) {
-        super().__init__(f"{ServiceError.code_for(status)}: {message}");
+        super.init(f"{ServiceError.code_for(status)}: {message}");
         self.status = status;
         self.detail = message;
     }

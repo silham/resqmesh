@@ -9,6 +9,7 @@ import hashlib;
 import math;
 import pickle;
 import from pathlib { Path }
+import builtins;
 import networkx as nx;
 import from resqmesh.adapters.geo.paths { KELANI_BBOX, cache_dir, ensure_dir, road_graph_path }
 
@@ -92,12 +93,35 @@ def build_graph(bbox: tuple[float, float, float, float] = KELANI_BBOX) -> any {
     return g;
 }
 
+"""Run `action` with the interpreter's own importer.
+
+Pickling a road graph resolves the reducer of every edge geometry through
+`__import__` (about 100k calls for the basin), and the runtime's scoped importer
+resolves paths on each call, which turns a sub-second dump into many seconds. Every
+module a pickle touches is already loaded, so the plain importer is equivalent here."""
+def with_plain_imports(action: any) -> any {
+    scope: any = globals().get("__builtins__");
+    if not isinstance(scope, dict) or "__import__" not in scope {
+        return action();
+    }
+    scoped = scope["__import__"];
+    scope["__import__"] = builtins.__import__;
+    try {
+        return action();
+    } finally {
+        scope["__import__"] = scoped;
+    }
+}
+
 def save_graph(g: any, path: Path) -> Path {
     ensure_dir(path.parent);
     tmp = path.with_suffix(path.suffix + ".part");
-    with tmp.open("wb") as fh {
-        pickle.dump(g, fh, protocol=pickle.HIGHEST_PROTOCOL);
+    def dump() -> None {
+        with tmp.open("wb") as fh {
+            pickle.dump(g, fh, protocol=pickle.HIGHEST_PROTOCOL);
+        }
     }
+    with_plain_imports(dump);
     tmp.replace(path);
     return path;
 }
@@ -115,9 +139,12 @@ def load_graph(path: any = None) -> any {
     if key in _GRAPH_CACHE {
         return _GRAPH_CACHE[key];
     }
-    with p.open("rb") as fh {
-        g = pickle.load(fh);
+    def read() -> any {
+        with p.open("rb") as fh {
+            return pickle.load(fh);
+        }
     }
+    g = with_plain_imports(read);
     if not isinstance(g, nx.MultiDiGraph) {
         raise TypeError(f"{p} does not contain a MultiDiGraph");
     }

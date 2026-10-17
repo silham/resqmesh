@@ -9,7 +9,8 @@ import json;
 import shapely;
 import from shapely { wkb }
 import from shapely.geometry { Point, shape }
-import from shapely.ops { unary_union, transform }
+import numpy as np;
+import from shapely.ops { unary_union }
 import from shapely.prepared { prep }
 
 glob METRIC_CRS: str = "EPSG:32644";
@@ -68,14 +69,22 @@ def contains_point(collection: dict[str, any] | None, lat: float, lon: float) ->
     return bool(prepared(geom).intersects(Point(lon, lat)));
 }
 
-def to_metric(geom: any) -> any {
+"""Reproject every coordinate of `geom` with a pyproj transformer."""
+def reproject(geom: any, source: str, target: str) -> any {
     import from pyproj { Transformer }
-    t = Transformer.from_crs(WGS84, METRIC_CRS, always_xy=True);
-    return transform(t.transform, geom);
+    t = Transformer.from_crs(source, target, always_xy=True);
+    def move(coords: any) -> any {
+        cols: any = coords.T;
+        moved: any = t.transform(cols[0], cols[1]);
+        return np.column_stack([moved[0], moved[1]]);
+    }
+    return shapely.transform(geom, move);
+}
+
+def to_metric(geom: any) -> any {
+    return reproject(geom, WGS84, METRIC_CRS);
 }
 
 def to_wgs84(geom: any) -> any {
-    import from pyproj { Transformer }
-    t = Transformer.from_crs(METRIC_CRS, WGS84, always_xy=True);
-    return transform(t.transform, geom);
+    return reproject(geom, METRIC_CRS, WGS84);
 }
