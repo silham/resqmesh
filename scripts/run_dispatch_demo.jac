@@ -1,10 +1,10 @@
 """Smoke-run the geospatial + optimisation chain: A2 -> A3 -> A4 -> A5.
 
-    jac run -b python --no-takeover scripts/run_dispatch_demo.jac                        # real basin, 2016 peak
-    jac run -b python --no-takeover scripts/run_dispatch_demo.jac --at 2016-05-14T00:00  # earlier in the event
-    jac run -b python --no-takeover scripts/run_dispatch_demo.jac --no-prune             # ablation: no graph pruning
-    jac run -b python --no-takeover scripts/run_dispatch_demo.jac --synthetic            # no downloaded data needed
-    jac run -b python --no-takeover scripts/run_dispatch_demo.jac --geojson out.geojson  # hazard + routes for a map
+    jac run --no-takeover scripts/run_dispatch_demo.jac                        # real basin, 2016 peak
+    jac run --no-takeover scripts/run_dispatch_demo.jac --at 2016-05-14T00:00  # earlier in the event
+    jac run --no-takeover scripts/run_dispatch_demo.jac --no-prune             # ablation: no graph pruning
+    jac run --no-takeover scripts/run_dispatch_demo.jac --synthetic            # no downloaded data needed
+    jac run --no-takeover scripts/run_dispatch_demo.jac --geojson out.geojson  # hazard + routes for a map
 
 Rainfall is the real Open-Meteo archive replayed at `--at` (cached after the first
 run, so `RESQMESH_OFFLINE=1` works). The incidents and fleet are **synthetic**, placed

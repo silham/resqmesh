@@ -50,7 +50,7 @@ jobs:
           test "$n" -gt 20
 
       - name: Offline end-to-end incident
-        run: jac run -b python --no-takeover scripts/demo.jac
+        run: jac run --no-takeover scripts/demo.jac
 
       # The primary safety gate. A malformed plan reaching the approval gate is the
       # failure mode that would make an autonomous system in this domain unsafe to
@@ -61,7 +61,7 @@ jobs:
       # The scenario replay recomputes the hard constraints itself and fails the build
       # on any violation.
       - name: Replay metrics
-        run: jac run -b python --no-takeover scripts/run_replay.jac
+        run: jac run --no-takeover scripts/run_replay.jac
 
       - name: Upload metrics
         if: always()

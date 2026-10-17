@@ -1,9 +1,9 @@
 """Run one incident end to end, offline, no API key, no download.
 
-    jac run -b python --no-takeover scripts/demo.jac                  # scripted: approve, second wave, reject
-    jac run -b python --no-takeover scripts/demo.jac --interactive    # you are the commander at each gate
-    jac run -b python --no-takeover scripts/demo.jac --llm live       # real providers from .env
-    jac run -b python --no-takeover scripts/demo.jac --world real     # the fetched Kelani basin, 2016 rainfall
+    jac run --no-takeover scripts/demo.jac                  # scripted: approve, second wave, reject
+    jac run --no-takeover scripts/demo.jac --interactive    # you are the commander at each gate
+    jac run --no-takeover scripts/demo.jac --llm live       # real providers from .env
+    jac run --no-takeover scripts/demo.jac --world real     # the fetched Kelani basin, 2016 rainfall
 
 The commander states one goal; everything up to the approval gate is the system's own
 decision, and the printout is the trace it wrote while making them.

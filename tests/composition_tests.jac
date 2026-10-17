@@ -8,7 +8,6 @@ shared reducers.
 import json;
 import re;
 import tempfile;
-import warnings;
 import from datetime { datetime, timedelta, UTC }
 import from pathlib { Path }
 import from resqmesh.adapters.fakes { FakeGazetteer }
@@ -23,19 +22,6 @@ import from resqmesh.contracts.models {
 }
 import from resqmesh.contracts.ports { RainfallSeries, WeatherPort }
 import from resqmesh.contracts.state { IncidentState, STATE_FIELDS, append_only, versioned }
-
-"""The metric reprojection helpers in the geo adapter still go through
-`shapely.ops.transform`, which shapely 2.2 deprecates; the test runner turns every
-warning into an error, so that one deprecation is silenced for this file."""
-def _quiet_reprojection_deprecation() -> bool {
-    warnings.filterwarnings(
-        "ignore", message=r"The 'shapely\.ops\.transform\(\)' function is deprecated",
-        category=DeprecationWarning
-    );
-    return True;
-}
-
-glob _QUIET: bool = _quiet_reprojection_deprecation();
 
 glob NOW: datetime = datetime(2016, 5, 17, 6, 0, tzinfo=UTC);
 glob EDGE_ID: any = re.compile(r"^[^-\s]+-[^-\s]+-\d+$");

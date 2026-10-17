@@ -1,6 +1,6 @@
 """Run the replay scenarios and emit the Table 7 metrics.
 
-    jac run -b python --no-takeover scripts/run_replay.jac
+    jac run --no-takeover scripts/run_replay.jac
 
 Writes `outputs/metrics.json` (the graded artefact) and prints the scorecard. Exits
 non-zero if either hard constraint fails, so CI blocks on a guardrail regression, not

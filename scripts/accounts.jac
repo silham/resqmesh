@@ -1,9 +1,9 @@
 """Manage accounts on a running server.
 
-    jac run -b python --no-takeover scripts/accounts.jac bootstrap cmdr-01 --code SETUP-CODE
-    jac run -b python --no-takeover scripts/accounts.jac add dispatch-01 --role dispatcher
-    jac run -b python --no-takeover scripts/accounts.jac list
-    jac run -b python --no-takeover scripts/accounts.jac enrol BOAT-01 --base-url https://host
+    jac run --no-takeover scripts/accounts.jac bootstrap cmdr-01 --code SETUP-CODE
+    jac run --no-takeover scripts/accounts.jac add dispatch-01 --role dispatcher
+    jac run --no-takeover scripts/accounts.jac list
+    jac run --no-takeover scripts/accounts.jac enrol BOAT-01 --base-url https://host
 
 The server owns the roster, so this talks to it over HTTP rather than touching its
 storage. `bootstrap` creates the very first commander from the one-time setup code the

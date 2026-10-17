@@ -1,8 +1,8 @@
 """Download and derive every geospatial input ResQ-Mesh needs, once.
 
-    jac run -b python --no-takeover scripts/fetch_data.jac                 # everything
-    jac run -b python --no-takeover scripts/fetch_data.jac --only srtm roads
-    jac run -b python --no-takeover scripts/fetch_data.jac --force         # rebuild even if present
+    jac run --no-takeover scripts/fetch_data.jac                 # everything
+    jac run --no-takeover scripts/fetch_data.jac --only srtm roads
+    jac run --no-takeover scripts/fetch_data.jac --force         # rebuild even if present
 
 Idempotent and resumable: each step checks for its finished artefact and skips if
 present, downloads go to `*.part` and are renamed only when complete. Nothing is

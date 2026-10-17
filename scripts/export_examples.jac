@@ -1,4 +1,4 @@
-"""Regenerate the example incident views: `jac run -b python --no-takeover scripts/export_examples.jac`.
+"""Regenerate the example incident views: `jac run --no-takeover scripts/export_examples.jac`.
 
 Writes `docs/examples/*.json`: real `get_incident` responses captured from the synthetic
 incident at each stage of its lifecycle, so every console screen can be built and reviewed

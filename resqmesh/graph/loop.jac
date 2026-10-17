@@ -137,6 +137,8 @@ walker Supervise {
 """One incident, driven through its graph. Every method is an input to the loop
 followed by one walk; the loop decides what that input means. Nothing here tells the
 system what to do next."""
+glob MAX_CHECKPOINTS: int = 400;
+
 obj IncidentRunner {
     has agents: AgentSet,
         incident_id: str,
@@ -195,6 +197,15 @@ obj IncidentRunner {
         return copy_state(inc.state) if inc else new_state(self.incident_id, "");
     }
 
+    """Remember a transition. A long incident writes thousands of them, so the history keeps
+    the most recent `MAX_CHECKPOINTS`; the incident node itself always holds the current state."""
+    def checkpoint(state: IncidentState) -> None {
+        self.checkpoints.append(state);
+        if len(self.checkpoints) > MAX_CHECKPOINTS {
+            self.checkpoints = self.checkpoints[-MAX_CHECKPOINTS:];
+        }
+    }
+
     """Every recorded transition, newest first: the reconstructable audit trail."""
     def history -> list[IncidentState] {
         return list(reversed(self.checkpoints));
@@ -212,7 +223,7 @@ obj IncidentRunner {
         }
         fresh = apply_update(inc.state, update);
         inc.state = fresh;
-        self.checkpoints.append(fresh);
+        self.checkpoint(fresh);
     }
 
     """An input followed by one walk. The baseline is re-asserted on every input, so
@@ -226,7 +237,7 @@ obj IncidentRunner {
         if inc is not None {
             fresh = apply_update(inc.state, payload);
             inc.state = fresh;
-            self.checkpoints.append(fresh);
+            self.checkpoint(fresh);
             inc spawn Supervise(runner=self);
         }
         return self.state();

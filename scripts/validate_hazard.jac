@@ -1,7 +1,7 @@
 """Score the hazard footprint against an independently published flood extent.
 
-    jac run -b python --no-takeover scripts/fetch_data.jac --only flood_reference gn srtm
-    jac run -b python --no-takeover scripts/validate_hazard.jac
+    jac run --no-takeover scripts/fetch_data.jac --only flood_reference gn srtm
+    jac run --no-takeover scripts/validate_hazard.jac
 
 Everything in `outputs/metrics.json` is scored against labels we wrote ourselves,
 which makes it a regression check. This is the one accuracy number in the project
