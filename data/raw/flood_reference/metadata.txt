@@ -1,0 +1,99 @@
+######################################################################################
+#                                                                                    #
+#                               ADAM Floods Metadata                                 #
+#                                                                                    #
+######################################################################################
+
+The data contained in this folder are packaged by unique eventid.
+The format of ADAM Flood eventid are as follows:
+
+FL-YYYYMMDD-ISO3-XX
+
+FL - Flood Event
+YYYY - Year (e.g. 2022)
+MM - Month (e.g. 12)
+DD - Day (e.g. 15)
+ISO3 - Country Code based on ISO 3166-1 alpha-3
+XX - index code
+
+_____________________________________________________________________________________
+Files contained in the zipped event folder:
+
+FL-YYYYMMDD-ISO3-XX.gpkg -> GeoPackage vector file of the ADAM Rapid Impact Analysis
+FL-YYYYMMDD-ISO3-XX.json -> GeoJSON vector file of the ADAM Rapid Impact Analysis
+FL-YYYYMMDD-ISO3-XX.tiff -> Flood Raster Associated with the event clipped by extent
+_____________________________________________________________________________________
+
+Metadata for: FL-YYYYMMDD-ISO3-XX.gpkg
+Metadata for: FL-YYYYMMDD-ISO3-XX.json
+
+Geometry Type: MultiPolygon
+Driver: GeoPackage & GeoJSON
+Data Sources: WFP HQ-GIS, UN SALB, OCHA COD
+
+Column Names and description and format
+
+iso3 - Country Code (text)
+Country - Country name (text)
+Region - Region or Admin Level 1 (text)
+District - District or Admin Level 2 (text)
+adm2_id - District unique ID (text)
+total_population - Total number of population in Admin 2 based on WorldPop 2022 (real)
+ID - Event index (text)
+total_flooded_area - Total flooded area by Admin 2. Unit is in hectares (real)
+total_cropland_area - Total cropland area by Admin 2. Unit is in hectares (real)
+total_flooded_croplands - Total flooded cropland by Admin 2 in hectares (real)
+directly_aff_popn - Total number of population in the flooded pixel (real)
+ch_dap - Number of children ages 0-9 directly affected by flood by Admin 2 (real)
+el_dap - Number of Elderly ages >60 directly affected by flood by Admin 2 (real)
+Flooded Area - Total flooded area by Admin 2. Unit is in hectares (text)
+Flooded Cropland - Total flooded cropland by Admin 2 in hectares (text)
+Directly Affected Pop -  Total number of population in the flooded pixel (text)
+Directly Affected Ch -  Number of children ages 0-9 directly affected by flood by Admin 2 (text)
+Directly Affected El - Number of elderly ages >60 directly affected by flood by Admin 2 (text)
+date_proc - flood event processing date: YYYYMMDD format (text)
+eventid - Unique event identifier (text)
+
+Information Source:
+
+Cropland Mask - NASA Global Food Security Analysis Support Database 30m (GFSAD30)
+Population - WorldPop 2022
+Flood - NOAA VIIRS
+
+Processing: Google Earth Engine (Google.org)
+_____________________________________________________________________________________
+
+Metadata for: FL-YYYYMMDD-ISO3-XX.tiff
+
+Driver: Raster
+Data Source: NOAA VIIRS Flood (5 days composite)
+Spatial Resolution: 375m/px
+Temporal Resolution: Daily Global Flood Coverage
+Re-processing: WFP-ADAM
+
+Band Values:
+
+0 - No Data
+1 - Low Flood (0-33% of pixels are detected with water)
+2 - Moderate Flood (34% - 66% of pixels are detected with water)
+3 - High Flood (67% - 99% of pixels are detected with water)
+9 - Clouds
+10 - Land Mass
+
+Permanent waters are masked based on MOD44W (MODIS land and water mask)
+
+Attribution: NOAA VIIRS Floodmap
+
+Floodscan (SFED and MFED 90m) data included in this map is licensed to WFP and is
+not an open data. This is only for use by WFP internal and is not available for
+public consumption. Please visit floodscan (link below) for access beyond ADAM.
+
+https://www.aer.com/weather-risk-management/floodscan-near-real-time-and-historical-flood-mapping/
+_____________________________________________________________________________________
+
+For additional questions, please write to ADAM developers at wfp.adam@wfp.org
+or hq.gis@wfp.org
+
+######################################################################################
+#                                     End                                            #
+######################################################################################

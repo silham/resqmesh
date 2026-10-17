@@ -1,0 +1,74 @@
+[project]
+name = "resqmesh"
+version = "0.1.0"
+description = "Autonomous situational intelligence and resource dispatch engine for flood and landslide response"
+entry-point = "main"
+kind = "web-app"
+jac-version = "==0.37.25"
+license = "MIT"
+
+[dependencies]
+
+[dependencies.pypi]
+numpy = ">=2.0"
+scipy = ">=1.13"
+shapely = ">=2.0"
+pyproj = ">=3.6"
+rasterio = ">=1.4"
+networkx = ">=3.2"
+osmnx = ">=2.0"
+ortools = ">=9.12"
+pysheds = ">=0.4"
+httpx = ">=0.27"
+reportlab = ">=4.1"
+python-dotenv = ">=1.0"
+
+[dependencies.npm]
+"@mantine/core" = "^9.6.2"
+"@mantine/hooks" = "^9.6.2"
+"@mantine/notifications" = "^9.6.2"
+"@tanstack/react-query" = "^5.103.2"
+leaflet = "^1.9.4"
+react-leaflet = "^5.0.0"
+maplibre-gl = "^6.14.0"
+react = "^19.2.0"
+react-dom = "^19.2.0"
+react-router-dom = "^6.22.0"
+react-error-boundary = "^5.0.0"
+"@tanstack/react-form" = "^1.33.0"
+zod = "^4.3.6"
+
+[dependencies.npm.dev]
+vite = "^6.4.1"
+"@vitejs/plugin-react" = "^4.7.0"
+typescript = "^5.3.3"
+"@types/react" = "^19.2.0"
+"@types/react-dom" = "^19.2.0"
+
+[dev-dependencies]
+
+[dev-dependencies.pypi]
+watchdog = ">=3.0.0"
+
+[placement]
+default = "server"
+
+[serve]
+docs_enabled = true
+
+[serve.workers]
+count = "1"
+
+[scale.scheduler]
+enabled = true
+
+[test]
+directory = "tests"
+
+[client]
+
+[client.app_meta_data]
+title = "ResQ-Mesh — Commander Console"
+description = "Flood and landslide response: report, bulletins, responder dispatch and commander console."
+theme_color = "#00a79d"
+icon = "/favicon.svg"

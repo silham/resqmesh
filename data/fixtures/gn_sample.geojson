@@ -1,0 +1,170 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "gn_id": "LK1106110",
+    "name_en": "Kolonnawa",
+    "name_si": "කොළොන්නාව",
+    "name_ta": null,
+    "ds_division": "Kolonnawa",
+    "district": "Colombo",
+    "center_lat": 6.93333948,
+    "center_lon": 79.88975249,
+    "area_sqkm": 0.25455886
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "gn_id": "LK1106125",
+    "name_en": "Megoda Kolonnawa",
+    "name_si": "මෙගොඩ කොළොන්නාව",
+    "name_ta": null,
+    "ds_division": "Kolonnawa",
+    "district": "Colombo",
+    "center_lat": 6.9326724,
+    "center_lon": 79.90015061,
+    "area_sqkm": 0.55483063
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "gn_id": "LK1239160",
+    "name_en": "Biyagama North",
+    "name_si": "බියගම උතුර",
+    "name_ta": null,
+    "ds_division": "Biyagama",
+    "district": "Gampaha",
+    "center_lat": 6.95677283,
+    "center_lon": 79.99648376,
+    "area_sqkm": 1.32067436
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "gn_id": "LK1239165",
+    "name_en": "Biyagama West",
+    "name_si": "බියගම බටහිර",
+    "name_ta": null,
+    "ds_division": "Biyagama",
+    "district": "Gampaha",
+    "center_lat": 6.95243238,
+    "center_lon": 79.98431866,
+    "area_sqkm": 1.23348807
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "gn_id": "LK1239220",
+    "name_en": "Biyagama South",
+    "name_si": "බියගම දකුණ",
+    "name_ta": null,
+    "ds_division": "Biyagama",
+    "district": "Gampaha",
+    "center_lat": 6.94283282,
+    "center_lon": 79.98174465,
+    "area_sqkm": 1.64098245
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "gn_id": "LK1115275",
+    "name_en": "Pahathgama",
+    "name_si": "පහත්ගම",
+    "name_ta": null,
+    "ds_division": "Seethawaka",
+    "district": "Colombo",
+    "center_lat": 6.89618509,
+    "center_lon": 80.08363429,
+    "area_sqkm": 0.7018199
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "gn_id": "LK1112075",
+    "name_en": "Meegoda North",
+    "name_si": "මීගොඩ උතුර",
+    "name_ta": null,
+    "ds_division": "Homagama",
+    "district": "Colombo",
+    "center_lat": 6.86493175,
+    "center_lon": 80.05247856,
+    "area_sqkm": 1.53167394
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "gn_id": "LK1109020",
+    "name_en": "Kaduwela",
+    "name_si": "කඩුවෙල",
+    "name_ta": null,
+    "ds_division": "Kaduwela",
+    "district": "Colombo",
+    "center_lat": 6.93054644,
+    "center_lon": 79.98704067,
+    "area_sqkm": 1.77321833
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "gn_id": "LK1106010",
+    "name_en": "Sedawatta",
+    "name_si": "සේදවත්ත",
+    "name_ta": null,
+    "ds_division": "Kolonnawa",
+    "district": "Colombo",
+    "center_lat": 6.95392539,
+    "center_lon": 79.88418346,
+    "area_sqkm": 0.58785381
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "gn_id": "LK1103140",
+    "name_en": "Suduwella",
+    "name_si": "සුදුවැල්ල",
+    "name_ta": null,
+    "ds_division": "Colombo",
+    "district": "Colombo",
+    "center_lat": 6.92655401,
+    "center_lon": 79.85914308,
+    "area_sqkm": 0.9221773
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "gn_id": "LK1115185",
+    "name_en": "Suduwella",
+    "name_si": "සුදුවැල්ල",
+    "name_ta": null,
+    "ds_division": "Seethawaka",
+    "district": "Colombo",
+    "center_lat": 6.92064304,
+    "center_lon": 80.11461455,
+    "area_sqkm": 2.54468492
+   }
+  }
+ ]
+}
