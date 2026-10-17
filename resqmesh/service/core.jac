@@ -23,6 +23,7 @@ import uuid;
 import from datetime { datetime, UTC }
 import from resqmesh.contracts.enums { ApprovalDecision, commitment_is_open }
 import from resqmesh.contracts.models { RawSignal, to_json }
+import from resqmesh.agents.hazard.pruning { prune_graph }
 import from resqmesh.graph.loop { IncidentRunner }
 import from resqmesh.service.view { blocked_road_features, build_view, plan_routes }
 
@@ -454,11 +455,33 @@ obj IncidentService {
             try {
                 self.graphs = {ref.graph_path: self.graph_loader(ref.graph_path)};   # keep only the latest
             } except Exception as exc {
-                log.warning("route geometry unavailable (%s); drawing straight lines", exc);
-                return None;
+                # A resumed incident can point at a routing graph that is no longer on disk.
+                # The same graph is the road network minus the hazard's impassable edges, so
+                # rebuild it rather than draw straight lines.
+                rebuilt = self.rebuilt_routing_graph(state);
+                if rebuilt is None {
+                    log.warning("route geometry unavailable (%s); drawing straight lines", exc);
+                    return None;
+                }
+                log.info("routing graph %s is gone; rebuilt from the road network and the hazard", ref.graph_path);
+                self.graphs = {ref.graph_path: rebuilt};
             }
         }
         return self.graphs[ref.graph_path];
+    }
+
+    """The routing graph as the hazard assessment defined it, or None if that cannot be rebuilt."""
+    def rebuilt_routing_graph(state: any) -> any {
+        hazard = state.hazard;
+        if hazard is None or self.base_graph_loader is None {
+            return None;
+        }
+        try {
+            return prune_graph(self.base_graph_loader(), hazard.impassable_edge_ids);
+        } except Exception as exc {
+            log.warning("could not rebuild the routing graph (%s)", exc);
+            return None;
+        }
     }
 }
 

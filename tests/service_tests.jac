@@ -965,6 +965,40 @@ test "missing route geometry is drawn as an approximate straight line" {
     }
 }
 
+def lost_graph(path: str) -> any {
+    raise FileNotFoundError(f"road graph not found at {path}");
+}
+
+test "a routing graph that is gone from disk is rebuilt, so routes keep their road geometry" {
+    svc = fresh();
+    view = at_gate(svc);
+    routed = {a["vehicle_id"] for a in view["plan"]["assignments"] if a["route_edge_ids"]};
+    assert routed, "the scenario must have a real road route";
+    before = {r["vehicle_id"]: r["coordinates"] for r in view["routes"]};
+    # a resumed incident whose pruned graph file no longer exists
+    svc.graph_loader = lost_graph;
+    svc.graphs = {};
+    svc.publish();
+    after = {r["vehicle_id"]: r for r in get_incident()["routes"]};
+    for vid in routed {
+        assert after[vid]["approximate"] is False;
+        assert after[vid]["coordinates"] == before[vid];
+    }
+}
+
+test "with neither the routing graph nor the road network the route is a dashed straight line" {
+    svc = fresh();
+    view = at_gate(svc);
+    svc.graph_loader = lost_graph;
+    svc.base_graph_loader = None;
+    svc.graphs = {};
+    svc.publish();
+    for r in get_incident()["routes"] {
+        a = [x for x in view["plan"]["assignments"] if x["vehicle_id"] == r["vehicle_id"]][0];
+        assert r["approximate"] is bool(a["route_edge_ids"]);
+    }
+}
+
 test "the trace tail is the newest 200 events" {
     assert TRACE_TAIL == 200;
     state = new_state("INC-T", "a goal");

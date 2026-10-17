@@ -12,14 +12,13 @@ Configuration comes from the environment (see `.env.example`):
 
 import logging;
 import os;
-import tempfile;
 import threading;
 import from datetime { datetime, timedelta, UTC }
 import from dotenv { load_dotenv }
 import from pathlib { Path }
 import from resqmesh.adapters.broadcast.telegram { TelegramChannelBroadcaster }
 import from resqmesh.adapters.fakes { StubLLM }
-import from resqmesh.adapters.geo.paths { data_dir, dem_path }
+import from resqmesh.adapters.geo.paths { data_dir, dem_path, ensure_dir, outputs_dir }
 import from resqmesh.adapters.geo.roads { load_graph }
 import from resqmesh.adapters.llm.config { router_from_env }
 import from resqmesh.adapters.llm.router { ProviderRouter }
@@ -82,7 +81,9 @@ def build_service(
     } else {
         llm = StubLLM();
     }
-    out_dir = Path(tempfile.mkdtemp(prefix="resqmesh-graphs-"));
+    # Routing graphs and SITREPs are written where a restart finds them again: an incident
+    # resumed after a restart still points at the graph its routes were drawn on.
+    out_dir = ensure_dir(outputs_dir() / ("graphs-" + world_kind));
     world: any = None;
     divisions: dict[str, dict[str, any]] = {};
     if world_kind == "real" {
