@@ -1,8 +1,10 @@
 .git
 .jac
 node_modules
+dist
 data/raw
 data/cache
 outputs
 *.pkl
 .env
+.DS_Store

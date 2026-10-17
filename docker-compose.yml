@@ -24,7 +24,7 @@ services:
       - resqmesh-data:/app/data
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-fsS", "-X", "POST", "-H", "content-type: application/json", "-d", "{}", "http://localhost:8000/function/health"]
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/healthz"]
       interval: 15s
       timeout: 5s
       retries: 3

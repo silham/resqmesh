@@ -255,6 +255,23 @@ docker compose down          # stop and remove containers (volumes kept)
 docker compose down -v       # also remove volumes (wipes the incident and SITREPs)
 ```
 
+### Deploying on Coolify
+
+Create a **Public Repository** resource, pick the **Dockerfile** build pack, branch `main`, and set
+**Ports Exposes** to `8000`. Then:
+
+- **Environment variables** (Production): `RESQMESH_AUTH_MODE=accounts`, `RESQMESH_SETUP_CODE=<a long
+  random code>`, `JAC_SERVE_AUTH_SECRET=<a long random value>`, `RESQMESH_SALT=<a long random value>`,
+  `RESQMESH_PUBLIC_HOST=<your domain>`, plus any of `GEMINI_API_KEY`, `GROQ_API_KEY`,
+  `TELEGRAM_BOT_TOKEN`. Add `RESQMESH_DEMO=1` to start with the synthetic incident open.
+- **Persistent storage:** mount `/var/lib/resqmesh/jac` (the incident, roster and learned trust) and
+  `/app/outputs` (SITREP PDFs and routing graphs).
+- **Health check:** path `/healthz`, port `8000`, start period 120 s.
+- **Memory:** the build needs about 3 GB free (it seals the app with `jac build`); the running container
+  needs about 1 GB.
+
+Open `/console` after the first deploy and enter the setup code to create the first commander.
+
 ---
 
 ## Who uses which page
