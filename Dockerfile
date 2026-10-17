@@ -35,10 +35,12 @@ VOLUME ["/var/lib/resqmesh/jac", "/app/outputs", "/app/data"]
 
 EXPOSE 8000
 
-# The first start unpacks the runtime into JAC_CACHE_HOME and starts the database, so it
-# takes a little longer than the ones after it.
-HEALTHCHECK --interval=15s --timeout=5s --start-period=120s --retries=5 \
-    CMD curl -fsS http://localhost:8000/healthz || exit 1
+# There is deliberately no HEALTHCHECK here. A platform that sees one does a rolling update,
+# starting the new container while the old one still runs, and the two would then have
+# the same embedded database directory open at once, which corrupts it. This service must
+# stop the old container before the new one starts. docker-compose.yml keeps a healthcheck,
+# which is safe there. The first start unpacks the runtime into JAC_CACHE_HOME and starts
+# the database, so it takes a little longer than the ones after it.
 
 # The base image's entrypoint is already `jac`, so the command is its arguments only.
 # RESQMESH_DEMO=1 (set by docker-compose) opens the synthetic incident at start, so a

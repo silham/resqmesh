@@ -266,7 +266,12 @@ Create a **Public Repository** resource, pick the **Dockerfile** build pack, bra
   `TELEGRAM_BOT_TOKEN`. Add `RESQMESH_DEMO=1` to start with the synthetic incident open.
 - **Persistent storage:** mount `/var/lib/resqmesh/jac` (the incident, roster and learned trust) and
   `/app/outputs` (SITREP PDFs and routing graphs).
-- **Health check:** path `/healthz`, port `8000`, start period 120 s.
+- **Health check:** leave Coolify's health check **off**. With it on, Coolify starts the new container
+  while the old one is still running, and both open the same embedded database directory in
+  `/var/lib/resqmesh/jac`, which corrupts it. With it off, the old container stops first. The app
+  answers on `/healthz` if you want to check it by hand.
+- **Secrets:** untick **Build Variable** on every environment variable, so keys and tokens are not
+  passed as build arguments and printed in the build log.
 - **Memory:** the build needs about 3 GB free (it seals the app with `jac build`); the running container
   needs about 1 GB.
 
