@@ -83,23 +83,32 @@ def state_of(signals: list[RawSignal], reports: list[IncidentReport] | None = No
 # Test doubles
 # --------------------------------------------------------------------------- #
 
+obj ContextLLM(StubLLM) {
+    has contexts: list[str] = [];
+
+    override def extract(text: str, schema: type, lang_hint: str = "unknown", context: str = "") -> ExtractionResult {
+        self.contexts.append(context);
+        return super.extract(text, schema, lang_hint=lang_hint, context=context);
+    }
+}
+
 obj RecordingLLM(StubLLM) {
     has seen: list[str] = [];
 
-    override def extract(text: str, schema: type, lang_hint: str = "unknown") -> ExtractionResult {
+    override def extract(text: str, schema: type, lang_hint: str = "unknown", context: str = "") -> ExtractionResult {
         self.seen.append(text);
-        return super.extract(text, schema, lang_hint=lang_hint);
+        return super.extract(text, schema, lang_hint=lang_hint, context=context);
     }
 }
 
 obj BrokenLLM(StubLLM) {
-    override def extract(text: str, schema: type, lang_hint: str = "unknown") -> ExtractionResult {
+    override def extract(text: str, schema: type, lang_hint: str = "unknown", context: str = "") -> ExtractionResult {
         raise TimeoutError("provider down");
     }
 }
 
 obj GarbageLLM(StubLLM) {
-    override def extract(text: str, schema: type, lang_hint: str = "unknown") -> ExtractionResult {
+    override def extract(text: str, schema: type, lang_hint: str = "unknown", context: str = "") -> ExtractionResult {
         return ExtractionResult(
             payload={"hazard_type": "tsunami", "severity_claim": 9}, provider=LLMProvider.STUB
         );
@@ -107,7 +116,7 @@ obj GarbageLLM(StubLLM) {
 }
 
 obj LeakyLLM(StubLLM) {
-    override def extract(text: str, schema: type, lang_hint: str = "unknown") -> ExtractionResult {
+    override def extract(text: str, schema: type, lang_hint: str = "unknown", context: str = "") -> ExtractionResult {
         payload: dict[str, any] = {
             "hazard_type": "flood",
             "raw_place_text": "Biyagama",
@@ -551,4 +560,56 @@ test "unprocessed signals helper" {
     s2 = sig(2, "b");
     done = rep(1, "x");
     assert unprocessed_signals(IncidentState(raw_signals=[s1, s2], reports=[done])) == [s2];
+}
+
+# --------------------------------------------------------------------------- #
+# Reading a report in the light of its incident
+# --------------------------------------------------------------------------- #
+
+glob FLOOD_GOAL: str = "coordinate the response to flooding in the Kelani basin";
+
+test "someone in distress who names no cause is read as the incident's hazard" {
+    # No flood word in the message: without the incident goal it is a hazard nobody named.
+    body = "Two children are trapped in a house in Biyagama";
+    assert extract_report(sig(1, body), StubLLM(), GAZ)[0].hazard_type == HazardType.UNKNOWN;
+    r = extract_report(sig(1, body), StubLLM(), GAZ, context=FLOOD_GOAL)[0];
+    assert r.hazard_type == HazardType.FLOOD;
+}
+
+test "a report that names another hazard keeps it despite the incident" {
+    r = extract_report(sig(1, "Landslide blocked the road in Biyagama, people trapped"), StubLLM(), GAZ, context=FLOOD_GOAL)[0];
+    assert r.hazard_type == HazardType.LANDSLIDE;
+}
+
+test "a message with no distress in it is not pulled into the incident" {
+    r = extract_report(sig(1, "Meeting at the Biyagama temple tomorrow"), StubLLM(), GAZ, context=FLOOD_GOAL)[0];
+    assert r.hazard_type == HazardType.UNKNOWN;
+}
+
+test "the incident goal reaches the model with the report" {
+    llm = ContextLLM();
+    extract_report(sig(1, "Two children are trapped in a house in Biyagama"), llm, GAZ, context=FLOOD_GOAL);
+    assert llm.contexts == [FLOOD_GOAL];
+}
+
+test "the ingest agent passes the incident goal to extraction" {
+    llm = ContextLLM();
+    agent = IngestAgent(llm=llm, gazetteer=GAZ);
+    state = state_of([sig(1, "Two children are trapped in a house in Biyagama")]);
+    state.goal = FLOOD_GOAL;
+    agent.run(state, T0 + timedelta(minutes=1));
+    assert llm.contexts == [FLOOD_GOAL];
+}
+
+test "a trapped-in-a-house report joins the flood cluster instead of opening a new incident" {
+    agent = IngestAgent(llm=StubLLM(), gazetteer=GAZ);
+    state = state_of([
+        sig(1, "Flooding in Biyagama, 12 people trapped", source="src:a"),
+        sig(2, "Two children are trapped in a house in Biyagama", source="src:b", minutes=5)
+    ]);
+    state.goal = FLOOD_GOAL;
+    update = agent.run(state, T0 + timedelta(minutes=10));
+    clusters = update["clusters"];
+    assert len(clusters) == 1;
+    assert len(clusters[0].member_report_ids) == 2;
 }

@@ -16,7 +16,7 @@ replay can tell which prompt produced which extraction.
 
 import from resqmesh.contracts.enums { HazardType, VulnerabilityFlag }
 
-glob EXTRACTION_PROMPT_VERSION: str = "extract-v1";
+glob EXTRACTION_PROMPT_VERSION: str = "extract-v2";
 glob VISION_PROMPT_VERSION: str = "vision-v1";
 glob REPAIR_PROMPT_VERSION: str = "repair-v1";
 
@@ -31,6 +31,9 @@ glob EXTRACTION_SYSTEM: str = (
     "\n"
     "Fields:\n"
     f"- \"hazard_type\": one of {enum_values(HazardType)}. Use \"unknown\" if unclear.\n"
+    "  When an incident context is given and the report describes people trapped, stranded, hurt or\n"
+    "  in danger without saying what caused it, use the hazard the incident is about (a flooding\n"
+    "  incident: \"flood\"). A report that clearly names another hazard keeps that hazard.\n"
     "- \"description\": one short English sentence restating what the reporter said. Add nothing.\n"
     "- \"raw_place_text\": the place name exactly as the reporter gave it, romanised in its usual\n"
     "  English spelling (e.g. \"Kolonnawa\"). Empty string if no place is named.\n"
@@ -70,7 +73,8 @@ glob REPAIR_TEMPLATE: str = (
 );
 
 """The user turn for an extraction: the report fenced off from the instructions."""
-def extraction_user(text: str, lang_hint: str) -> str {
+def extraction_user(text: str, lang_hint: str, context: str = "") -> str {
     hint = "" if lang_hint in ("", "unknown") else f" (language hint: {lang_hint})";
-    return f"Field report{hint}:\n<<<\n{text}\n>>>";
+    about = f"Incident context: {context}\n" if context else "";
+    return f"{about}Field report{hint}:\n<<<\n{text}\n>>>";
 }

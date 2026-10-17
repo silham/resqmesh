@@ -297,13 +297,13 @@ def locate(
 for the trace.
 """
 def extract_report(
-    signal: RawSignal, llm: LLMPort, gazetteer: GeocodePort
+    signal: RawSignal, llm: LLMPort, gazetteer: GeocodePort, context: str = ""
 ) -> tuple[IncidentReport, str | None] {
     safe_body = redact(signal.body);
     failure: str | None = None;
     fields: ExtractedReport;
     try {
-        result = llm.extract(safe_body, ExtractedReport, lang_hint=signal.lang_hint);
+        result = llm.extract(safe_body, ExtractedReport, lang_hint=signal.lang_hint, context=context);
         fields = ExtractedReport.from_payload(result.payload);
     } except SchemaValidationError as exc {
         failure = f"schema: {schema_error_count(exc)} invalid field(s)";

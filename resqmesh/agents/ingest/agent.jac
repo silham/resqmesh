@@ -46,7 +46,7 @@ obj IngestAgent {
         new_reports: list[IncidentReport] = [];
         degraded: list[str] = [];
         for signal in pending {
-            extracted = extract_report(signal, self.llm, self.gazetteer);
+            extracted = extract_report(signal, self.llm, self.gazetteer, context=state.goal or "");
             new_reports.append(extracted[0]);
             failure = extracted[1];
             if failure {

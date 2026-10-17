@@ -40,6 +40,15 @@ glob VULNERABILITY_CUES: list[tuple[str, list[str]]] = [
     ("children_present", ["child", "children", "baby", "infant", "kids"])
 ];
 
+"""What an incident's goal can be about, and the words that say so."""
+glob CONTEXT_HAZARDS: list[tuple[HazardType, list[str]]] = [
+    (HazardType.FLOOD, ["flood", "inundat"]),
+    (HazardType.LANDSLIDE, ["landslide", "mudslide", "earth slip"])
+];
+
+"""Words of a person in danger who may not say what caused it."""
+glob DISTRESS_CUES: list[str] = ["trapped", "stranded", "stuck", "rescue", "help", "cannot leave", "can't leave"];
+
 glob PEOPLE_RE: any = re.compile(r"\b(\d{1,4})\s*(?:people|persons|trapped|stranded|families)");
 
 """An LLMPort with no model behind it."""
@@ -63,13 +72,30 @@ obj RuleBasedExtractor(LLMPort) {
         return tokens[0] if tokens else "";
     }
 
-    override def extract(text: str, schema: type, lang_hint: str = "unknown") -> ExtractionResult {
+    """The hazard an incident is about, read from its goal; None when the goal names none."""
+    static def context_hazard(context: str) -> HazardType | None {
+        low = context.lower();
+        for (hazard, words) in CONTEXT_HAZARDS {
+            if any([w in low for w in words]) {
+                return hazard;
+            }
+        }
+        return None;
+    }
+
+    override def extract(text: str, schema: type, lang_hint: str = "unknown", context: str = "") -> ExtractionResult {
         low = text.lower();
+        hazard = self.classify(text);
+        about = RuleBasedExtractor.context_hazard(context);
+        # Somebody in distress who names no cause is read in the light of the incident.
+        if hazard == HazardType.UNKNOWN and about is not None and any([c in low for c in DISTRESS_CUES]) {
+            hazard = about;
+        }
         people = PEOPLE_RE.search(low);
         all_clear = any([p in low for p in ALL_CLEAR]);
         severity = 0 if all_clear else min(4, 1 + low.count("urgent") + low.count("critical"));
         payload: dict[str, any] = {
-            "hazard_type": self.classify(text),
+            "hazard_type": hazard,
             "description": text.strip()[:500],
             "raw_place_text": RuleBasedExtractor.guess_place(text),
             "severity_claim": severity,

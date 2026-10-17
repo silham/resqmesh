@@ -80,8 +80,10 @@ obj Advisory(Contract) {
 structure, reads photographs and drafts prose."""
 obj LLMPort {
     """Free text -> a payload validated against `schema`. One repair attempt on parse
-    failure, then escalate. Malformed output is never coerced into looking valid."""
-    def extract(text: str, schema: type, lang_hint: str = "unknown") -> ExtractionResult {
+    failure, then escalate. Malformed output is never coerced into looking valid.
+    `context` says what the incident is about, so a report that does not name its hazard
+    can be read in that light."""
+    def extract(text: str, schema: type, lang_hint: str = "unknown", context: str = "") -> ExtractionResult {
         raise NotImplementedError("extract");
     }
 

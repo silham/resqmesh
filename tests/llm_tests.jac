@@ -12,7 +12,7 @@ import tempfile;
 import httpx;
 import from datetime { datetime, UTC }
 import from resqmesh.adapters.fakes { FakeGazetteer }
-import from resqmesh.adapters.llm.prompts { EXTRACTION_SYSTEM, VISION_SYSTEM, VISION_FIELDS }
+import from resqmesh.adapters.llm.prompts { EXTRACTION_SYSTEM, VISION_SYSTEM, VISION_FIELDS, extraction_user }
 import from resqmesh.adapters.llm.config { plan_chain, router_from_env }
 import from resqmesh.adapters.llm.openai_compat { ChatProvider, ProviderError, ProviderSpec }
 import from resqmesh.adapters.llm.router { ProviderRouter, RouterConfig, log as router_log }
@@ -445,4 +445,13 @@ test "provider error never contains the key" {
     }
     assert raised is not None;
     assert "key-123" not in str(raised) and "<key>" in str(raised);
+}
+
+test "the incident context is part of the extraction request, outside the fenced report" {
+    plain = extraction_user("Water rising in Biyagama", "en");
+    assert "Incident context" not in plain;
+    framed = extraction_user("Water rising in Biyagama", "en", "flooding in the Kelani basin");
+    assert framed.startswith("Incident context: flooding in the Kelani basin");
+    assert framed.index("Incident context") < framed.index("<<<");
+    assert "incident context" in EXTRACTION_SYSTEM.lower();
 }

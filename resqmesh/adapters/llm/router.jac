@@ -245,17 +245,17 @@ obj ProviderRouter(LLMPort) {
 
     # -- LLMPort --------------------------------------------------------------
 
-    override def extract(text: str, schema: type, lang_hint: str = "unknown") -> ExtractionResult {
+    override def extract(text: str, schema: type, lang_hint: str = "unknown", context: str = "") -> ExtractionResult {
         messages: list[dict[str, any]] = [
             {"role": "system", "content": EXTRACTION_SYSTEM},
-            {"role": "user", "content": extraction_user(text, lang_hint)}
+            {"role": "user", "content": extraction_user(text, lang_hint, context)}
         ];
         result = self.structured(messages, schema, vision=False);
         if result is not None {
             return result;
         }
         log.error("llm: every hosted provider failed; deterministic offline extraction");
-        return self.fallback.extract(text, schema, lang_hint=lang_hint);
+        return self.fallback.extract(text, schema, lang_hint=lang_hint, context=context);
     }
 
     """Read a damage photograph. Raises `ProviderUnavailable` if nothing can see.
